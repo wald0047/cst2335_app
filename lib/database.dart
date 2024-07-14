@@ -20,5 +20,5 @@ abstract class AppDatabase extends FloorDatabase {
   AirplaneDAO get airplaneDAO;
   CustomerDAO get customerDAO;
   FlightDAO get flightDAO;
-  ReservationDAO get reservationDAO;
+  ReservationDao get reservationDao;
 }

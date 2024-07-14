@@ -1,20 +1,20 @@
 import 'package:floor/floor.dart';
-import 'package:cst2335_app/reservation.dart';
+import 'reservation.dart';
 
 @dao
-abstract class ReservationDAO {
-  @Query('SELECT * FROM Reservation')
-  Future<List<Reservation>> getAllReservations();
+abstract class ReservationDao {
+  @Query('SELECT * FROM reservations')
+  Future<List<Reservation>> findAllReservations();
 
-  @Query('SELECT * FROM Reservation WHERE id = :id')
+  @Query('SELECT * FROM reservations WHERE id = :id')
   Stream<Reservation?> findReservationById(int id);
 
   @insert
-  Future<int> insertReservation(Reservation item);
+  Future<void> insertReservation(Reservation reservation);
 
   @update
-  Future<void> updateReservation(Reservation item);
+  Future<void> updateReservation(Reservation reservation);
 
   @delete
-  Future<void> deleteReservation(Reservation item);
+  Future<void> deleteReservation(Reservation reservation);
 }
