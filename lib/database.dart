@@ -13,8 +13,11 @@ import 'package:cst2335_app/reservationdao.dart';
 import 'package:floor/floor.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 
+import 'date_time_converter.dart';
+
 part 'database.g.dart'; // the generated code will be there
 
+@TypeConverters([DateTimeConverter])
 @Database(version: 1, entities: [Airplane,Customer,Flight,Reservation])
 abstract class AppDatabase extends FloorDatabase {
   AirplaneDAO get airplaneDAO;

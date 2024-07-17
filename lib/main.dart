@@ -4,7 +4,9 @@ import 'package:cst2335_app/AirplanePage.dart';
 import 'package:cst2335_app/FlightPage.dart';
 import 'package:cst2335_app/ReservationPage.dart';
 
-void main() {
+
+void main() async {
+
   runApp(const MyApp());
 }
 

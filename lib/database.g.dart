@@ -104,7 +104,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Airplane` (`id` INTEGER PRIMARY KEY AUTOINCREMENT)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Customer` (`id` INTEGER PRIMARY KEY AUTOINCREMENT)');
+            'CREATE TABLE IF NOT EXISTS `Customer` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `firstName` TEXT NOT NULL, `lastName` TEXT NOT NULL, `address` TEXT NOT NULL, `birthdate` INTEGER NOT NULL)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Flight` (`id` INTEGER PRIMARY KEY AUTOINCREMENT)');
         await database.execute(
@@ -213,19 +213,37 @@ class _$CustomerDAO extends CustomerDAO {
         _customerInsertionAdapter = InsertionAdapter(
             database,
             'Customer',
-            (Customer item) => <String, Object?>{'id': item.id},
+            (Customer item) => <String, Object?>{
+                  'id': item.id,
+                  'firstName': item.firstName,
+                  'lastName': item.lastName,
+                  'address': item.address,
+                  'birthdate': _dateTimeConverter.encode(item.birthdate)
+                },
             changeListener),
         _customerUpdateAdapter = UpdateAdapter(
             database,
             'Customer',
             ['id'],
-            (Customer item) => <String, Object?>{'id': item.id},
+            (Customer item) => <String, Object?>{
+                  'id': item.id,
+                  'firstName': item.firstName,
+                  'lastName': item.lastName,
+                  'address': item.address,
+                  'birthdate': _dateTimeConverter.encode(item.birthdate)
+                },
             changeListener),
         _customerDeletionAdapter = DeletionAdapter(
             database,
             'Customer',
             ['id'],
-            (Customer item) => <String, Object?>{'id': item.id},
+            (Customer item) => <String, Object?>{
+                  'id': item.id,
+                  'firstName': item.firstName,
+                  'lastName': item.lastName,
+                  'address': item.address,
+                  'birthdate': _dateTimeConverter.encode(item.birthdate)
+                },
             changeListener);
 
   final sqflite.DatabaseExecutor database;
@@ -243,13 +261,23 @@ class _$CustomerDAO extends CustomerDAO {
   @override
   Future<List<Customer>> getAllCustomers() async {
     return _queryAdapter.queryList('SELECT * FROM Customer',
-        mapper: (Map<String, Object?> row) => Customer(row['id'] as int?));
+        mapper: (Map<String, Object?> row) => Customer(
+            row['id'] as int,
+            row['firstName'] as String,
+            row['lastName'] as String,
+            row['address'] as String,
+            _dateTimeConverter.decode(row['birthdate'] as int)));
   }
 
   @override
   Stream<Customer?> findCustomerById(int id) {
     return _queryAdapter.queryStream('SELECT * FROM Customer WHERE id = ?1',
-        mapper: (Map<String, Object?> row) => Customer(row['id'] as int?),
+        mapper: (Map<String, Object?> row) => Customer(
+            row['id'] as int,
+            row['firstName'] as String,
+            row['lastName'] as String,
+            row['address'] as String,
+            _dateTimeConverter.decode(row['birthdate'] as int)),
         arguments: [id],
         queryableName: 'Customer',
         isView: false);
@@ -399,3 +427,6 @@ class _$ReservationDAO extends ReservationDAO {
     await _reservationDeletionAdapter.delete(item);
   }
 }
+
+// ignore_for_file: unused_element
+final _dateTimeConverter = DateTimeConverter();
