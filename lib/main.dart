@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cst2335_app/CustomerPage.dart';
-import 'package:cst2335_app/AirplanePage.dart';
+import 'package:cst2335_app/airplanepage.dart';
 import 'package:cst2335_app/FlightPage.dart';
 import 'package:cst2335_app/ReservationPage.dart';
 
