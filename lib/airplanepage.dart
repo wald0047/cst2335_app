@@ -42,7 +42,7 @@ class AirplanePageState extends State<AirplanePage> {
       airplaneDAO = database.airplaneDAO;
       airplaneDAO.getAllAirplanes().then((planes) {
         setState(() {
-          planes.addAll(planes);
+          this.planes.addAll(planes);
         });
       });
     });
