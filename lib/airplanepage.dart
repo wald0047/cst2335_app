@@ -84,7 +84,7 @@ class AirplanePageState extends State<AirplanePage> {
       return Row(
         children: [
           Expanded(flex: 2, child: Center(child: AirplaneList())),
-          Expanded(flex: 3, child: Column(children: [DetailsPage()])),
+          Expanded(flex: 3, child: Column(children: [DetailsPage(false)])),
         ],
       );
     } else {
@@ -92,7 +92,7 @@ class AirplanePageState extends State<AirplanePage> {
       if (selectedPlane == null) {
         return AirplaneList();
       } else {
-        return DetailsPage();
+        return DetailsPage(true);
       }
     }
   }
@@ -101,69 +101,7 @@ class AirplanePageState extends State<AirplanePage> {
     return Center(
       child: Column(
         children: [
-          Row(
-              children: [
-                Text("Passengers"),
-                Expanded(
-                  child:
-                  TextField(
-                    controller:passengerTextCtl,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
-                    keyboardType: const TextInputType.numberWithOptions(
-                        decimal: false,
-                        signed: false
-                    ),
-                    decoration: const InputDecoration(
-                      hintText: 'Passengers',
-                    ),
-                  ),
-                )
-              ]
-          ),
-          Row(
-              children: [
-                Text("Range"),
-                Expanded(
-                  child:
-                  TextField(
-                    controller:rangeTextCtl,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
-                    keyboardType: const TextInputType.numberWithOptions(
-                        decimal: false,
-                        signed: false
-                    ),
-                    decoration: const InputDecoration(
-                      hintText: 'Range in km',
-                    ),
-                  ),
-                )
-              ]
-          ),
-          Row(
-              children: [
-                Text("Speed"),
-                Expanded(
-                  child:
-                  TextField(
-                    controller:speedTextCtl,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
-                    keyboardType: const TextInputType.numberWithOptions(
-                        decimal: false,
-                        signed: false
-                    ),
-                    decoration: const InputDecoration(
-                      hintText: 'Speed in km/h',
-                    ),
-                  ),
-                )
-              ]
-          ),
+          EditWidgets(),
           ElevatedButton(
               onPressed: addPlane,
               child: Text("Add")),
@@ -176,6 +114,10 @@ class AirplanePageState extends State<AirplanePage> {
                     onTap: () {
                        setState(() {
                          selectedPlane = planes[rowNum];
+                         typeTextCtl.text = selectedPlane!.type;
+                         passengerTextCtl.text = selectedPlane!.numPassengers.toString();
+                         speedTextCtl.text = selectedPlane!.maxSpeed.toString();
+                         rangeTextCtl.text = selectedPlane!.range.toString();
                       });
                     },
                     child: Row(
@@ -234,21 +176,13 @@ class AirplanePageState extends State<AirplanePage> {
     });
   }
 
-  Widget DetailsPage() {
+  Widget DetailsPage(bool editWidgets) {
     if (selectedPlane == null) {
       return Text("Nothing is selected");
     } else {
       Airplane plane = selectedPlane!;
-      return Column(children: [
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text("id: ${plane.id ?? ""}"),
-              Text(plane.type),
-              Text(plane.numPassengers.toString()),
-              Text(plane.maxSpeed.toString()),
-              Text(plane.range.toString()),
-            ]),
+      var widgets = [
+        Text("id: ${plane.id ?? ""}"),
         Row(mainAxisAlignment:MainAxisAlignment.spaceEvenly,
             children:[
               ElevatedButton(
@@ -260,13 +194,115 @@ class AirplanePageState extends State<AirplanePage> {
                   child: Text("Unselect")),
               ElevatedButton(
                   onPressed: () {
+                    int index = planes.indexOf(selectedPlane!);
+                    Airplane newPlane = Airplane(selectedPlane?.id,
+                        typeTextCtl.value.text,
+                        int.parse(passengerTextCtl.value.text),
+                        int.parse(speedTextCtl.value.text),
+                        int.parse(rangeTextCtl.value.text)
+                    );
+                    airplaneDAO.updateAirplane(newPlane);
+                    setState(() {
+                      planes[index] = newPlane;
+                      selectedPlane = newPlane;
+                    });
+                  },
+                  child: Text("Update")),
+              ElevatedButton(
+                  onPressed: () {
                     deleteAirplane(plane);
                   },
                   child: Text("Delete"))])
-      ]);
+      ];
+      if (editWidgets) {
+        widgets.insert(1, EditWidgets());
+      }
+      return Column(children: widgets);
     }
   }
 
+  Widget EditWidgets() {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Text("Type"),
+            Expanded(
+              child:
+              TextField(
+                controller:typeTextCtl,
+                decoration: const InputDecoration(
+                  hintText: 'Type',
+                ),
+              ),
+            )
+          ]
+      ),
+        Row(
+            children: [
+              Text("Passengers"),
+              Expanded(
+                child:
+                TextField(
+                  controller:passengerTextCtl,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  keyboardType: const TextInputType.numberWithOptions(
+                      decimal: false,
+                      signed: false
+                  ),
+                  decoration: const InputDecoration(
+                    hintText: 'Passengers',
+                  ),
+                ),
+              )
+            ]
+        ),
+        Row(
+            children: [
+              Text("Range"),
+              Expanded(
+                child:
+                TextField(
+                  controller:rangeTextCtl,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  keyboardType: const TextInputType.numberWithOptions(
+                      decimal: false,
+                      signed: false
+                  ),
+                  decoration: const InputDecoration(
+                    hintText: 'Range in km',
+                  ),
+                ),
+              )
+            ]
+        ),
+        Row(
+            children: [
+              Text("Speed"),
+              Expanded(
+                child:
+                TextField(
+                  controller:speedTextCtl,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  keyboardType: const TextInputType.numberWithOptions(
+                      decimal: false,
+                      signed: false
+                  ),
+                  decoration: const InputDecoration(
+                    hintText: 'Speed in km/h',
+                  ),
+                ),
+              )
+            ]
+        ),
+    ],);
+  }
   //This function gets run when you click the button
   void addPlane() {
     int idx = planes.length;
