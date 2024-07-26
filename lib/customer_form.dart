@@ -1,3 +1,4 @@
+import 'package:cst2335_app/AppLocalizations.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cst2335_app/customer.dart';
@@ -5,11 +6,14 @@ import 'package:cst2335_app/customerdao.dart';
 import 'customer_repository.dart';
 
 class CustomerForm extends StatefulWidget {
-  final bool isAdding; // Flag to indicate if the form is for adding a new customer
+  final bool
+      isAdding; // Flag to indicate if the form is for adding a new customer
   final Customer? selectedItem; // The customer being edited (if any)
   final CustomerDAO dao; // Data Access Object for customer operations
-  final VoidCallback onSuccess; // Callback function to invoke on successful operation
-  final VoidCallback onClose; // Callback function to invoke when closing the form
+  final VoidCallback
+      onSuccess; // Callback function to invoke on successful operation
+  final VoidCallback
+      onClose; // Callback function to invoke when closing the form
 
   const CustomerForm({
     super.key,
@@ -133,17 +137,22 @@ class CustomerFormState extends State<CustomerForm> {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: const Text('Alert'),
-        content: const Text("Do you want to create the customer?"),
+        title: Text(AppLocalizations.of(context)!.translate('c_alert_title')!),
+        content: Text(widget.isAdding
+            ? AppLocalizations.of(context)!
+                .translate('c_create_customer_message')!
+            : AppLocalizations.of(context)!
+                .translate('c_update_customer_message')!),
         actions: <Widget>[
           ElevatedButton(
-              child: const Text("Confirm"),
+              child: Text(
+                  AppLocalizations.of(context)!.translate('c_confirm_button')!),
               onPressed: () {
                 if (_formKey.currentState?.validate() == true) {
                   try {
                     final DateFormat formatter = DateFormat('yyyy/MM/dd');
                     DateTime birthdate =
-                    formatter.parse(_birthdateController.value.text);
+                        formatter.parse(_birthdateController.value.text);
                     Customer item = Customer(
                         widget.isAdding
                             ? Customer.ID++
@@ -159,8 +168,10 @@ class CustomerFormState extends State<CustomerForm> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                           content: Text(widget.isAdding
-                              ? 'Customer added!'
-                              : 'Customer updated!'),
+                              ? AppLocalizations.of(context)!.translate(
+                                  'c_create_customer_success_message')!
+                              : AppLocalizations.of(context)!.translate(
+                                  'c_update_customer_success_message')!),
                           backgroundColor: Colors.green),
                     );
                     if (widget.isAdding) {
@@ -171,15 +182,20 @@ class CustomerFormState extends State<CustomerForm> {
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(widget.isAdding
-                            ? "Failed to add the customer: $e"
-                            : "Failed to update the customer: $e"),
+                            ? AppLocalizations.of(context)!.translate(
+                                    'c_create_customer_fail_message')! +
+                                e.toString()
+                            : AppLocalizations.of(context)!.translate(
+                                    'c_update_customer_fail_message')! +
+                                e.toString()),
                         backgroundColor: Colors.red));
                   }
                 }
                 Navigator.pop(context);
               }),
           ElevatedButton(
-              child: const Text("Cancel"),
+              child: Text(
+                  AppLocalizations.of(context)!.translate('c_cancel_button')!),
               onPressed: () {
                 Navigator.pop(context);
               }),
@@ -193,33 +209,39 @@ class CustomerFormState extends State<CustomerForm> {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: const Text('Alert'),
-        content: const Text("Do you want to delete this customer?"),
+        title: Text(AppLocalizations.of(context)!.translate('c_alert_title')!),
+        content: Text(AppLocalizations.of(context)!
+            .translate('c_delete_customer_message')!),
         actions: <Widget>[
           ElevatedButton(
-              child: const Text("Confirm"),
+              child: Text(
+                  AppLocalizations.of(context)!.translate('c_confirm_button')!),
               onPressed: () {
                 if (_formKey.currentState?.validate() == true) {
                   try {
                     widget.dao.deleteCustomer(widget.selectedItem!);
                     widget.onSuccess();
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Customer deleted!'),
+                      SnackBar(
+                          content: Text(AppLocalizations.of(context)!
+                              .translate('c_delete_customer_success_message')!),
                           backgroundColor: Colors.green),
                     );
                     _clearForm();
                     widget.onClose();
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("Failed to delete the customer: $e"),
+                        content: Text(AppLocalizations.of(context)!
+                                .translate('c_delete_customer_fail_message')! +
+                            e.toString()),
                         backgroundColor: Colors.red));
                   }
                 }
                 Navigator.pop(context);
               }),
           ElevatedButton(
-              child: const Text("Cancel"),
+              child: Text(
+                  AppLocalizations.of(context)!.translate('c_cancel_button')!),
               onPressed: () {
                 Navigator.pop(context);
               }),
@@ -235,135 +257,155 @@ class CustomerFormState extends State<CustomerForm> {
         margin: const EdgeInsets.all(16.0),
         child: widget.isAdding || widget.selectedItem != null
             ? Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(height: 36),
-              const Icon(
-                Icons.account_circle,
-                size: 120,
-              ),
-              const SizedBox(height: 24),
-              if (widget.isAdding)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    const Text(
-                        'Load the previous customer data?'),
-                    const SizedBox(width: 8),
-                    Switch(
-                      value: switchValue,
-                      onChanged: (value) {
-                        setState(() {
-                          switchValue = value;
-                        });
-                        value ? _loadForm() : _clearForm();
+                    const SizedBox(height: 36),
+                    const Icon(
+                      Icons.account_circle,
+                      size: 120,
+                    ),
+                    const SizedBox(height: 24),
+                    if (widget.isAdding)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Text(AppLocalizations.of(context)!
+                              .translate('c_load_customer_data_message')!),
+                          const SizedBox(width: 8),
+                          Switch(
+                            value: switchValue,
+                            onChanged: (value) {
+                              setState(() {
+                                switchValue = value;
+                              });
+                              value ? _loadForm() : _clearForm();
+                            },
+                          ),
+                        ],
+                      ),
+                    if (!widget.isAdding)
+                      TextFormField(
+                        controller: _idController,
+                        decoration: const InputDecoration(
+                            icon: Icon(Icons.numbers),
+                            border: OutlineInputBorder(),
+                            labelText: "ID"),
+                        enabled: false,
+                      ),
+                    SizedBox(height: widget.isAdding ? 12 : 24),
+                    TextFormField(
+                      controller: _firstnameController,
+                      decoration: InputDecoration(
+                          icon: const Icon(Icons.person),
+                          hintText: AppLocalizations.of(context)!
+                              .translate('c_first_name_hint_text')!,
+                          border: const OutlineInputBorder(),
+                          labelText: AppLocalizations.of(context)!
+                              .translate('c_first_name_label')!),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return AppLocalizations.of(context)!
+                              .translate('c_error_text')!;
+                        }
+                        return null;
                       },
                     ),
+                    const SizedBox(height: 24),
+                    TextFormField(
+                      controller: _lastnameController,
+                      decoration: InputDecoration(
+                          icon: const Icon(Icons.perm_identity),
+                          hintText: AppLocalizations.of(context)!
+                              .translate('c_last_name_hint_text')!,
+                          border: const OutlineInputBorder(),
+                          labelText: AppLocalizations.of(context)!
+                              .translate('c_last_name_label')!),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return AppLocalizations.of(context)!
+                              .translate('c_last_name_error_text')!;
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 24),
+                    TextFormField(
+                      controller: _addressController,
+                      decoration: InputDecoration(
+                          icon: const Icon(Icons.house_rounded),
+                          hintText: AppLocalizations.of(context)!
+                              .translate('c_address_hint_text')!,
+                          border: const OutlineInputBorder(),
+                          labelText: AppLocalizations.of(context)!
+                              .translate('c_address_label')!),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return AppLocalizations.of(context)!
+                              .translate('c_address_error_text')!;
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 24),
+                    TextFormField(
+                      controller: _birthdateController,
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        icon: const Icon(Icons.calendar_today),
+                        hintText: AppLocalizations.of(context)!
+                            .translate('c_birthdate_hint_text')!,
+                        border: const OutlineInputBorder(),
+                        labelText: AppLocalizations.of(context)!
+                            .translate('c_birthdate_label')!,
+                      ),
+                      onTap: () {
+                        _selectDate(context);
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return AppLocalizations.of(context)!
+                              .translate('c_birthdate_error_text')!;
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ElevatedButton(
+                            onPressed: handleSubmit,
+                            child: Text(widget.isAdding
+                                ? AppLocalizations.of(context)!
+                                    .translate('c_create_button')!
+                                : AppLocalizations.of(context)!
+                                    .translate('c_update_button')!)),
+                        const SizedBox(width: 12),
+                        if (!widget.isAdding)
+                          ElevatedButton(
+                              onPressed: handleDelete,
+                              child: Text(AppLocalizations.of(context)!
+                                  .translate('c_delete_button')!)),
+                        const SizedBox(width: 12),
+                        ElevatedButton(
+                            onPressed: widget.onClose,
+                            child: Text(AppLocalizations.of(context)!
+                                .translate('c_cancel_button')!)),
+                      ],
+                    )
                   ],
                 ),
-              if (!widget.isAdding)
-                TextFormField(
-                  controller: _idController,
-                  decoration: const InputDecoration(
-                      icon: Icon(Icons.numbers),
-                      border: OutlineInputBorder(),
-                      labelText: "ID"),
-                  enabled: false,
-                ),
-              SizedBox(height: widget.isAdding ? 12 : 24),
-              TextFormField(
-                controller: _firstnameController,
-                decoration: const InputDecoration(
-                    icon: Icon(Icons.person),
-                    hintText: "Enter your first name ...",
-                    border: OutlineInputBorder(),
-                    labelText: "First Name"),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your first name';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 24),
-              TextFormField(
-                controller: _lastnameController,
-                decoration: const InputDecoration(
-                    icon: Icon(Icons.perm_identity),
-                    hintText: "Enter your last name ...",
-                    border: OutlineInputBorder(),
-                    labelText: "Last Name"),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your last name';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 24),
-              TextFormField(
-                controller: _addressController,
-                decoration: const InputDecoration(
-                    icon: Icon(Icons.house_rounded),
-                    hintText: "Enter your address ...",
-                    border: OutlineInputBorder(),
-                    labelText: "Address"),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your address';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 24),
-              TextFormField(
-                controller: _birthdateController,
-                readOnly: true,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.calendar_today),
-                  border: OutlineInputBorder(),
-                  labelText: "Birthdate",
-                  hintText: "Select your birthdate",
-                ),
-                onTap: () {
-                  _selectDate(context);
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your birthdate';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ElevatedButton(
-                      onPressed: handleSubmit,
-                      child: Text(widget.isAdding ? "Create" : "Update")),
-                  const SizedBox(width: 12),
-                  if (!widget.isAdding)
-                    ElevatedButton(
-                        onPressed: handleDelete,
-                        child: const Text("Delete")),
-                  const SizedBox(width: 12),
-                  ElevatedButton(
-                      onPressed: widget.onClose,
-                      child: const Text("Cancel")),
-                ],
               )
-            ],
-          ),
-        )
-            : const Center(
-            child: Text("No customer is selected.",
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold))),
+            : Center(
+                child: Text(
+                    AppLocalizations.of(context)!
+                        .translate('c_no_selected_customer_message')!,
+                    style: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold))),
       ),
     );
   }

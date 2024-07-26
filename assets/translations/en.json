@@ -1,7 +1,48 @@
 {
-  "customer": {
-    "ok_button": "OK",
-    "instructions":
+  "c_confirm_button": "Confirm",
+  "c_cancel_button": "Cancel",
+  "c_add_button": "Add",
+  "c_create_button": "Create",
+  "c_update_button": "Update",
+  "c_delete_button": "Delete",
 
-  }
+  "c_page_title": "Customer",
+  "c_instruction": "Instruction",
+  "c_instructions": "1. Search for Customers:\n  * Enter a keyword in the search box.\n  * Click the 'Search' button to find customers by name.\n\n2. Add a New Customer:\n  * Click the '+Add' button to open the form for adding a new customer.\n  * Use the switch at the top to load existing customer data or enter new information.\n  * Click 'Create' to save the new customer or 'Cancel' to return to the customer list.\n\n3. View and Edit Customer Details:\n  * Click on a customer in the list to view their details.\n  * Change any information you need to update.\n  * Click 'Update' to save changes, 'Delete' to remove the customer, or 'Cancel' to return to the customer list.",
+
+  "c_customer": "Customer",
+  "c_search_hint_text": "Enter first name, last name, ...",
+
+  "c_no_customers": "There are no customers yet.",
+
+  "c_alert_title": "Alert",
+  "c_create_customer_message": "Do you want to create the customer?",
+  "c_update_customer_message": "Do you want to update the customer?",
+  "c_delete_customer_message": "Do you want to delete the customer?",
+  "c_create_customer_success_message": "Customer created!",
+  "c_update_customer_success_message": "Customer updated!",
+  "c_delete_customer_success_message": "Customer deleted!",
+  "c_create_customer_fail_message": "Failed to create the customer: ",
+  "c_update_customer_fail_message": "Failed to update the customer: ",
+  "c_delete_customer_fail_message": "Failed to delete the customer",
+
+  "c_no_selected_customer_message": "No customer is selected.",
+  "c_load_customer_data_message": "Load the previous customer data?",
+
+  "c_first_name_label": "First Name",
+  "c_first_name_hint_text": "Enter your first name ...",
+  "c_first_name_error_text": "Please enter your first name.",
+
+  "c_last_name_label": "Last Name",
+  "c_last_name_hint_text": "Enter your last name ...",
+  "c_last_name_error_text": "Please enter your last name.",
+
+  "c_address_label": "Address",
+  "c_address_hint_text": "Enter your address ...",
+  "c_address_error_text": "Please enter your address.",
+
+  "c_birthdate_label": "Birthdate",
+  "c_birthdate_hint_text": "Select your birthdate ...",
+  "c_birthdate_error_message": "Please select your birthdate."
 }
+

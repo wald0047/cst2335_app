@@ -51,10 +51,10 @@ class CustomerListState extends State<CustomerList> {
               Expanded(
                 child: TextField(
                   controller: _searchController,
-                  decoration: const InputDecoration(
-                    hintText: "Enter first name, last name, ...", // Placeholder text
-                    border: OutlineInputBorder(), // Border style
-                    labelText: "Customer", // Label text
+                  decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context)!.translate('c_search_hint_text')!, // Placeholder text
+                    border: const OutlineInputBorder(), // Border style
+                    labelText: AppLocalizations.of(context)!.translate('c_customer')!, // Label text
                   ),
                 ),
               ),
@@ -79,7 +79,7 @@ class CustomerListState extends State<CustomerList> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.add), // Add icon
-                Text(AppLocalizations.of(context)!.translate('string')!), // Button text
+                Text(AppLocalizations.of(context)!.translate('c_add_button')!), // Button text
               ],
             ),
           ),
@@ -87,10 +87,10 @@ class CustomerListState extends State<CustomerList> {
           // Display customers or message if no customers are present
           Expanded(
             child: widget.customers.isEmpty
-                ? const Center(
+                ? Center(
               child: Text(
-                "There are no customers yet.", // Message when no customers
-                style: TextStyle(
+                AppLocalizations.of(context)!.translate('c_no_customers')!, // Message when no customers
+                style: const TextStyle(
                   color: Colors.grey,
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,

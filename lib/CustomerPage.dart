@@ -1,3 +1,4 @@
+import 'package:cst2335_app/AppLocalizations.dart';
 import 'package:cst2335_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:cst2335_app/database.dart';
@@ -69,71 +70,9 @@ class CustomerPageState extends State<CustomerPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Instructions'),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  '1. Search for Customers:',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '   - Enter a keyword in the search box.',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                Text(
-                  '   - Click the "Search" button to find customers by name.',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  '2. Add a New Customer:',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '   - Click the "+Add" button to open the form for adding a new customer.',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                Text(
-                  '   - Use the switch at the top to load existing customer data or enter new information.',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                Text(
-                  '   - Click "Create" to save the new customer or "Cancel" to return to the customer list.',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  '3. View and Edit Customer Details:',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '   - Click on a customer in the list to view their details.',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                Text(
-                  '   - Change any information you need to update.',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                Text(
-                  '   - Click "Update" to save changes, "Delete" to remove the customer, or "Cancel" to return to the customer list.',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ],
-            ),
+          title: Text(AppLocalizations.of(context)!.translate('c_instruction')!),
+          content: Text(
+            AppLocalizations.of(context)!.translate('c_instructions')!,
           ),
           actions: <Widget>[
             TextButton(
@@ -217,7 +156,7 @@ class CustomerPageState extends State<CustomerPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Customer'),
+        title: Text(AppLocalizations.of(context)!.translate('c_page_title')!),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.g_translate,
