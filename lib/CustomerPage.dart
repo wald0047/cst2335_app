@@ -1,3 +1,4 @@
+import 'package:cst2335_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:cst2335_app/database.dart';
 import 'package:cst2335_app/customerdao.dart';
@@ -21,6 +22,8 @@ class CustomerPageState extends State<CustomerPage> {
 
   Customer? selectedItem; // The currently selected customer.
   bool isAdding = false; // Whether the form is in "add" mode.
+
+  Locale _locale = const Locale("en", "CA");
 
   /// Initializes the database and loads customer data.
   void _loadDatabase() async {
@@ -202,6 +205,13 @@ class CustomerPageState extends State<CustomerPage> {
     }
   }
 
+  void _changeLanguage(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+    MyApp.setLocale(context, locale); // Assuming MyApp is the root widget.
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -210,8 +220,21 @@ class CustomerPageState extends State<CustomerPage> {
         title: const Text('Customer'),
         actions: <Widget>[
           IconButton(
+            icon: Icon(Icons.g_translate,
+              color: _locale.languageCode == 'en'
+                  ? null // Example color for Chinese
+                  : Colors.grey[600],
+
+                ),
+            onPressed: () {
+              _changeLanguage(
+                _locale.languageCode == 'en' ? const Locale('zh', 'CN') : const Locale('en', 'CA'),
+              );
+            }, // Switch the language when pressed
+          ),
+          IconButton(
             icon: const Icon(Icons.help_outline),
-            onPressed: _showHelpDialog, // Show the help dialog when the icon is pressed.
+            onPressed: _showHelpDialog,  // Show the help dialog when the icon is pressed.
           ),
         ],
       ),

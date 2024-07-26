@@ -1,5 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:cst2335_app/customer.dart';
+import 'package:cst2335_app/AppLocalizations.dart';
 
 /// A widget that displays a list of customers with search and add functionalities.
 class CustomerList extends StatefulWidget {
@@ -73,11 +75,11 @@ class CustomerListState extends State<CustomerList> {
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.all(12),
             ),
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.add), // Add icon
-                Text("Add"), // Button text
+                const Icon(Icons.add), // Add icon
+                Text(AppLocalizations.of(context)!.translate('string')!), // Button text
               ],
             ),
           ),
