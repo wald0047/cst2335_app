@@ -1,38 +1,65 @@
+import 'package:cst2335_app/AppLocalizations.dart';
 import 'package:flutter/material.dart';
 import 'package:cst2335_app/CustomerPage.dart';
 import 'package:cst2335_app/airplanepage.dart';
 import 'package:cst2335_app/FlightPage.dart';
 import 'package:cst2335_app/ReservationPage.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
-
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() {
+    return MyAppState();
+  }
+  static void setLocale(BuildContext context, Locale newLocale) async {
+    MyAppState? state = context.findAncestorStateOfType<MyAppState>();
+    state?.changeLanguage(newLocale);
+  }
+}
+
+class MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+  var _locale = const Locale("en", "ca");
+
+  void changeLanguage(Locale newLocale) {
+    setState(() {
+      _locale = newLocale;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Final Project',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      // home: const MyHomePage(title: 'Home'),
-      initialRoute: "/",
-      routes: {
-        '/customer': (context) => const CustomerPage(),
-        '/airplane': (context) => const AirplanePage(),
-        '/flight': (context) => const FlightPage(),
-        '/reservation': (context) => const ReservationPage(),
-        '/': (context) => const MyHomePage(title: 'Home'),
-
-      }
-    );
+        title: 'Final Project',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        supportedLocales: const <Locale>[
+          Locale("en", "CA"),
+          Locale("zh", "CN"),
+        ],
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        locale: _locale,
+        // home: const MyHomePage(title: 'Home'),
+        initialRoute: "/",
+        routes: {
+          '/customer': (context) => const CustomerPage(),
+          '/airplane': (context) => const AirplanePage(),
+          '/flight': (context) => const FlightPage(),
+          '/reservation': (context) => const ReservationPage(),
+          '/': (context) => const MyHomePage(title: 'Home'),
+        });
   }
 }
 

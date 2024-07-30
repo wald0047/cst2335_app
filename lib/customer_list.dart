@@ -1,11 +1,14 @@
+
 import 'package:flutter/material.dart';
 import 'package:cst2335_app/customer.dart';
+import 'package:cst2335_app/AppLocalizations.dart';
 
+/// A widget that displays a list of customers with search and add functionalities.
 class CustomerList extends StatefulWidget {
-  final List<Customer> customers;
-  final VoidCallback onAddCustomer;
-  final void Function(Customer) onSelectCustomer;
-  final void Function(String) onSearchCustomer;
+  final List<Customer> customers; // List of customers to display
+  final VoidCallback onAddCustomer; // Callback function when adding a customer
+  final void Function(Customer) onSelectCustomer; // Callback function when selecting a customer
+  final void Function(String) onSearchCustomer; // Callback function when searching for customers
 
   const CustomerList({
     super.key,
@@ -41,16 +44,17 @@ class CustomerListState extends State<CustomerList> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          // Search bar for filtering customers
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: TextField(
                   controller: _searchController,
-                  decoration: const InputDecoration(
-                    hintText: "Enter first name, last name, ...",
-                    border: OutlineInputBorder(),
-                    labelText: "Customer",
+                  decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context)!.translate('c_search_hint_text')!, // Placeholder text
+                    border: const OutlineInputBorder(), // Border style
+                    labelText: AppLocalizations.of(context)!.translate('c_customer')!, // Label text
                   ),
                 ),
               ),
@@ -58,103 +62,105 @@ class CustomerListState extends State<CustomerList> {
               IconButton(
                 iconSize: 32,
                 onPressed: () {
-                  widget.onSearchCustomer(_searchController.value.text);
+                  widget.onSearchCustomer(_searchController.value.text); // Trigger search callback
                 },
-                icon: const Icon(Icons.search),
+                icon: const Icon(Icons.search), // Search icon
               ),
             ],
           ),
           const SizedBox(height: 12),
+          // Button to add a new customer
           ElevatedButton(
             onPressed: widget.onAddCustomer,
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.all(12),
             ),
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.add),
-                Text("Add"),
+                const Icon(Icons.add), // Add icon
+                Text(AppLocalizations.of(context)!.translate('c_add_button')!), // Button text
               ],
             ),
           ),
           const SizedBox(height: 12),
+          // Display customers or message if no customers are present
           Expanded(
             child: widget.customers.isEmpty
-                ? const Center(
-                    child: Text(
-                      "There are no customers yet.",
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  )
+                ? Center(
+              child: Text(
+                AppLocalizations.of(context)!.translate('c_no_customers')!, // Message when no customers
+                style: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )
                 : ListView.builder(
-                    itemCount: widget.customers.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          widget.onSelectCustomer(widget.customers[index]);
-                        },
-                        child: Card(
-                          elevation: 4,
-                          margin: const EdgeInsets.symmetric(
-                              vertical: 8),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
+              itemCount: widget.customers.length, // Number of customers
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    widget.onSelectCustomer(widget.customers[index]); // Trigger select callback
+                  },
+                  child: Card(
+                    elevation: 4, // Card elevation for shadow effect
+                    margin: const EdgeInsets.symmetric(vertical: 8), // Vertical margin for spacing
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        children: [
+                          // Display customer index as a circle avatar
+                          CircleAvatar(
+                            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                            foregroundColor: Colors.white,
+                            child: Text(
+                              "${index + 1}", // Customer index (1-based)
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          // Display customer name
+                          Expanded(
                             child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                CircleAvatar(
-                                  backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-                                  foregroundColor: Colors.white,
-                                  child: Text(
-                                    "${index + 1}",
-                                    style: const TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        widget.customers[index].firstName,
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 12),
-                                      Text(
-                                        widget.customers[index].lastName,
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
+                                Text(
+                                  widget.customers[index].firstName,
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 const SizedBox(width: 12),
-                                const Icon(
-                                  Icons.chevron_right,
-                                  color: Colors.grey,
+                                Text(
+                                  widget.customers[index].lastName,
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                        ),
-                      );
-                    },
+                          const SizedBox(width: 12),
+                          const Icon(
+                            Icons.chevron_right, // Chevron icon indicating navigation
+                            color: Colors.grey,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
+                );
+              },
+            ),
           ),
         ],
       ),

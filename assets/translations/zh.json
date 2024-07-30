@@ -1,0 +1,47 @@
+{
+  "c_confirm_button": "确认",
+  "c_cancel_button": "取消",
+  "c_add_button": "添加",
+  "c_create_button": "创建",
+  "c_update_button": "更新",
+  "c_delete_button": "删除",
+
+  "c_page_title": "客户",
+  "c_instruction": "说明",
+  "c_instructions": "1. 搜索客户:\n  * 在搜索框中输入关键字。\n  * 点击“搜索”按钮以按姓名查找客户。\n\n2. 添加新客户:\n  * 点击“+添加”按钮打开添加新客户的表单。\n  * 使用顶部的切换开关加载现有客户数据或输入新信息。\n  * 点击“创建”以保存新客户或“取消”以返回客户列表。\n\n3. 查看和编辑客户详情:\n  * 点击列表中的客户查看其详情。\n  * 更改需要更新的任何信息。\n  * 点击“更新”以保存更改，点击“删除”以删除客户，或点击“取消”以返回客户列表。",
+
+  "c_customer": "客户",
+  "c_search_hint_text": "输入名，姓，等...",
+
+  "c_no_customers": "还没有客户。",
+
+  "c_alert_title": "警告",
+  "c_create_customer_message": "您要创建客户吗？",
+  "c_update_customer_message": "您要更新客户吗？",
+  "c_delete_customer_message": "您要删除客户吗？",
+  "c_create_customer_success_message": "客户已创建！",
+  "c_update_customer_success_message": "客户已更新！",
+  "c_delete_customer_success_message": "客户已删除！",
+  "c_create_customer_fail_message": "创建客户失败: ",
+  "c_update_customer_fail_message": "更新客户失败: ",
+  "c_delete_customer_fail_message": "删除客户失败",
+
+  "c_no_selected_customer_message": "没有选择客户。",
+  "c_load_customer_data_message": "加载之前的客户数据吗？",
+
+  "c_first_name_label": "名字",
+  "c_first_name_hint_text": "输入您的名字 ...",
+  "c_first_name_error_text": "请输入您的名字。",
+
+  "c_last_name_label": "姓氏",
+  "c_last_name_hint_text": "输入您的姓氏 ...",
+  "c_last_name_error_text": "请输入您的姓氏。",
+
+  "c_address_label": "地址",
+  "c_address_hint_text": "输入您的地址 ...",
+  "c_address_error_text": "请输入您的地址。",
+
+  "c_birthdate_label": "出生日期",
+  "c_birthdate_hint_text": "选择您的出生日期 ...",
+  "c_birthdate_error_message": "请选择您的出生日期。"
+}
