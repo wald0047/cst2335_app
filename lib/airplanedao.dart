@@ -10,11 +10,11 @@ abstract class AirplaneDAO {
   Stream<Airplane?> findAirplaneById(int id);
 
   @insert
-  Future<int> insertAirplane(Airplane item);
+  Future<int> insertAirplane(Airplane plane);
 
   @update
-  Future<void> updateAirplane(Airplane item);
+  Future<void> updateAirplane(Airplane plane);
 
   @delete
-  Future<void> deleteAirplane(Airplane item);
+  Future<void> deleteAirplane(Airplane plane);
 }

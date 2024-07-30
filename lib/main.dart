@@ -1,7 +1,7 @@
 import 'package:cst2335_app/AppLocalizations.dart';
 import 'package:flutter/material.dart';
 import 'package:cst2335_app/CustomerPage.dart';
-import 'package:cst2335_app/AirplanePage.dart';
+import 'package:cst2335_app/airplanepage.dart';
 import 'package:cst2335_app/FlightPage.dart';
 import 'package:cst2335_app/ReservationPage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -43,6 +43,7 @@ class MyAppState extends State<MyApp> {
         ),
         supportedLocales: const <Locale>[
           Locale("en", "CA"),
+          Locale("fr", "CA"),
           Locale("zh", "CN"),
         ],
         localizationsDelegates: const [
