@@ -1,0 +1,23 @@
+{
+  "a_title": "Avion",
+  "a_nosel": "Rien de sélectionné",
+  "a_update": "Actualiser",
+  "a_unsel": "Désélectionner",
+  "a_delete": "Supprimer",
+  "a_add": "Ajouter",
+  "a_clear": "Annuler",
+  "a_planes_c": "Avions:",
+  "a_new_p": "Nouvel Avion:",
+  "a_typehint" : "Quel est le nom de l'avion?",
+  "a_typelabel": "Nom de l'avion",
+  "a_confirmdel_t": "Confirmer la suprimation de l'avion",
+  "a_confirmdel_c":"Êtes-vous certain que vous voulez supprimer:\n",
+  "a_yes":"Oui",
+  "a_no":"Non",
+  "a_pass_hint": "Quel est le nombre de passagers?",
+  "a_pass_label": "Nombre de passengers",
+  "a_range_hint": "Quel est la portée de l'avion ?",
+  "a_range_label": "Portée (km)",
+  "a_spd_label": "Vitesse maximale (km/h)",
+  "a_spd_hint": "Quelle est la vitesse maximale de l'avion?"
+}

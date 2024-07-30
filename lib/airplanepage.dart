@@ -1,4 +1,6 @@
+import 'package:cst2335_app/AppLocalizations.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:cst2335_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:cst2335_app/airplane.dart';
 import 'package:cst2335_app/airplanedao.dart';
@@ -23,6 +25,8 @@ class AirplanePageState extends State<AirplanePage> {
   Airplane? selectedPlane;
   late AppDatabase database;
   late AirplaneDAO airplaneDAO;
+
+  Locale _locale = const Locale("en", "CA");
 
   @override
   void initState() {
@@ -69,12 +73,33 @@ class AirplanePageState extends State<AirplanePage> {
     await database.close();
   }
 
+  void changeLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+    MyApp.setLocale(context, locale); // Assuming MyApp is the root widget.
+  }
   @override
   Widget build(BuildContext context) {
+    var trans = AppLocalizations.of(context)!;
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: const Text('Airplane'),
+          title: Text(trans.translate('a_title')),
+          actions: <Widget>[
+        IconButton(
+        icon: Icon(Icons.g_translate,
+          color: _locale.languageCode == 'en'
+              ? null
+              : Colors.grey[600],
+        ),
+      onPressed: () {
+        changeLocale(
+          _locale.languageCode == 'en' ? const Locale('fr', 'CA') : const Locale('en', 'CA'),
+        );
+      }, // Switch the language when pressed
+    ),
+    ]
         ),
         body: responsiveLayout());
   }
@@ -103,10 +128,13 @@ class AirplanePageState extends State<AirplanePage> {
   }
 
   Widget AirplaneList() {
+    var trans = AppLocalizations.of(context)!;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Row(children: [Text(textAlign: TextAlign.left, "Planes:")]),
+        Row(children: [
+          Text(textAlign: TextAlign.left,
+              trans.translate("a_planes_c"))]),
         ListView.builder(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -153,6 +181,7 @@ class AirplanePageState extends State<AirplanePage> {
   }
 
   void deleteAirplane(Airplane plane) {
+    var trans = AppLocalizations.of(context)!;
     int index = planes.indexOf(plane);
     if (index < 0 || index > planes.length) {
       return;
@@ -161,12 +190,11 @@ class AirplanePageState extends State<AirplanePage> {
       showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: const Text('Confirm Airplane Removal'),
-          content: Text('Are you sure you would like to remove:\n' +
-              '${planes[index].type}'),
+          title: Text(trans.translate("a_confirmdel_t")),
+          content: Text('${trans.translate("a_confirmdel_c")}${planes[index].type}'),
           actions: <Widget>[
             TextButton(
-              child: const Text('Yes'),
+              child: Text(trans.translate("a_yes")),
               onPressed: () {
                 Airplane tmp = planes[index];
                 setState(() {
@@ -180,7 +208,7 @@ class AirplanePageState extends State<AirplanePage> {
               },
             ),
             TextButton(
-              child: const Text('No'),
+              child: Text(trans.translate("a_no")),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -192,8 +220,9 @@ class AirplanePageState extends State<AirplanePage> {
   }
 
   Widget DetailsPage() {
+    var trans = AppLocalizations.of(context)!;
     if (selectedPlane == null) {
-      return Text("Nothing is selected");
+      return Text(trans.translate("a_nosel"));
     } else {
       Airplane plane = selectedPlane!;
       var edit = [
@@ -207,7 +236,7 @@ class AirplanePageState extends State<AirplanePage> {
                       selectedPlane = null;
                     });
                   },
-                  child: Text("Unselect"))),
+                  child: Text(trans.translate("a_unsel")))),
           Padding(
               padding: EdgeInsets.all(4),
               child: ElevatedButton(
@@ -225,14 +254,14 @@ class AirplanePageState extends State<AirplanePage> {
                       selectedPlane = newPlane;
                     });
                   },
-                  child: Text("Update"))),
+                  child: Text(trans.translate("a_update")))),
           Padding(
               padding: EdgeInsets.all(4),
               child: ElevatedButton(
                   onPressed: () {
                     deleteAirplane(plane);
                   },
-                  child: Text("Delete"))),
+                  child: Text(trans.translate("a_delete")))),
         ]),
       ];
       var add = [
@@ -242,14 +271,14 @@ class AirplanePageState extends State<AirplanePage> {
               onPressed: () {
                 addPlane();
               },
-              child: Text("Add")),
+              child: Text(trans.translate("a_add"))),
           ElevatedButton(
               onPressed: () {
                 setState(() {
                   selectedPlane = null;
                 });
               },
-              child: Text("Clear")),
+              child: Text(trans.translate("a_clear"))),
         ])
       ];
       if (selectedPlane!.id == null) {
@@ -261,6 +290,7 @@ class AirplanePageState extends State<AirplanePage> {
   }
 
   Widget PlaneForm() {
+    var trans = AppLocalizations.of(context)!;
     return Form(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -275,12 +305,12 @@ class AirplanePageState extends State<AirplanePage> {
                   ),
                   enabled: false,
                 )
-              : Text('New Plane:'),
+              : Text(trans.translate("a_new_p")),
           TextFormField(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 icon: Icon(CupertinoIcons.airplane),
-                hintText: 'What is the plane called?',
-                labelText: 'Plane\'s name',
+                hintText: trans.translate("a_typehint"),
+                labelText: trans.translate("a_typelabel"),
               ),
               controller: typeTextCtl),
           TextFormField(
@@ -288,10 +318,10 @@ class AirplanePageState extends State<AirplanePage> {
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             keyboardType: const TextInputType.numberWithOptions(
                 decimal: false, signed: false),
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               icon: Icon(CupertinoIcons.person),
-              hintText: 'What is the number of passengers?',
-              labelText: 'Number of passengers',
+              hintText: trans.translate("a_pass_hint"),
+              labelText: trans.translate("a_pass_label"),
             ),
           ),
           TextFormField(
@@ -299,20 +329,20 @@ class AirplanePageState extends State<AirplanePage> {
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             keyboardType: const TextInputType.numberWithOptions(
                 decimal: false, signed: false),
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
                 icon: Icon(Icons.route),
-                hintText: 'What is the range of the plane?',
-                labelText: 'Range (km)'),
+                hintText: trans.translate("a_range_hint"),
+                labelText: trans.translate("a_range_label")),
           ),
           TextFormField(
             controller: speedTextCtl,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             keyboardType: const TextInputType.numberWithOptions(
                 decimal: false, signed: false),
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
                 icon: Icon(Icons.speed),
-                labelText: 'Speed (km/h)',
-                hintText: 'What is the speed of the plane?'),
+                labelText: trans.translate("a_spd_label"),
+                hintText: trans.translate("a_spd_hint")),
           ),
         ]));
   }
