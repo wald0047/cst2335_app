@@ -15,7 +15,7 @@
   "a_yes":"Oui",
   "a_no":"Non",
   "a_pass_hint": "Quel est le nombre de passagers?",
-  "a_pass_label": "Nombre de passengers",
+  "a_pass_label": "Nombre de passagers",
   "a_range_hint": "Quel est la portée de l'avion ?",
   "a_range_label": "Portée (km)",
   "a_spd_label": "Vitesse maximale (km/h)",
