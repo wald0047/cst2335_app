@@ -43,5 +43,20 @@
 
   "c_birthdate_label": "出生日期",
   "c_birthdate_hint_text": "选择您的出生日期 ...",
-  "c_birthdate_error_message": "请选择您的出生日期。"
+  "c_birthdate_error_message": "请选择您的出生日期。",
+
+  "f_page_title": "航班",
+  "f_instruction": "说明",
+  "f_instructions": "1. 查看航班：\n  * 列表显示所有可用航班。\n  * 每个航班显示出发城市、目的地城市、出发日期和到达日期。\n\n2. 添加新航班：\n  * 点击右下角的'+'按钮添加新航班。\n  * 填写必要信息并保存。\n\n3. 查看和编辑航班详情：\n  * 点击列表中的航班以查看其详情。\n  * 在详情页面，您可以更新或删除航班。",
+  "f_no_flights": "没有可用的航班。",
+  "f_departure": "出发",
+  "f_arrival": "到达",
+
+  "a_page_title": "添加航班",
+  "a_instruction": "添加航班的说明",
+  "a_instructions": "1. 填写出发城市。\n2. 填写目的地城市。\n3. 选择出发时间。\n4. 选择到达时间。\n5. 点击“添加航班”保存航班。",
+
+  "d_page_title": "航班详情",
+  "d_instruction": "航班详情的说明",
+  "d_instructions": "1. 查看航班详情。\n2. 编辑出发城市或目的地城市。\n3. 如果需要，更新出发时间或到达时间。\n4. 点击“更新”保存更改或点击“删除”删除航班。"
 }

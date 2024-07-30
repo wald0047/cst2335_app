@@ -5,13 +5,21 @@ import 'package:cst2335_app/AirplanePage.dart';
 import 'package:cst2335_app/FlightPage.dart';
 import 'package:cst2335_app/ReservationPage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
+import 'database.dart';
+import 'flightRepository.dart';
 
 void main() async {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build(); // Initialize the database
+  final flightRepository = FlightRepository(database); // Create an instance of FlightRepository
+  runApp(MyApp(flightRepository: flightRepository));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.flightRepository});
+  final FlightRepository flightRepository;
+
 
   @override
   State<MyApp> createState() {
@@ -35,7 +43,9 @@ class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return Provider.value( // New: Provide the FlightRepository instance to the widget tree
+        value: widget.flightRepository,
+    child: MaterialApp(
         title: 'Final Project',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -59,9 +69,11 @@ class MyAppState extends State<MyApp> {
           '/flight': (context) => const FlightPage(),
           '/reservation': (context) => const ReservationPage(),
           '/': (context) => const MyHomePage(title: 'Home'),
-        });
+        }
+        )
+      );
+    }
   }
-}
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});

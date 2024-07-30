@@ -43,6 +43,21 @@
 
   "c_birthdate_label": "Birthdate",
   "c_birthdate_hint_text": "Select your birthdate ...",
-  "c_birthdate_error_message": "Please select your birthdate."
+  "c_birthdate_error_message": "Please select your birthdate.",
+
+  "f_page_title": "Flights",
+  "f_instruction": "Instructions",
+  "f_instructions": "1. View Flights:\n  * The list shows all available flights.\n  * Each flight displays departure city, destination city, departure date, and arrival date.\n\n2. Add a New Flight:\n  * Tap the '+' button at the bottom right to add a new flight.\n  * Fill in the required information and save.\n\n3. View and Edit Flight Details:\n  * Tap on a flight in the list to view its details.\n  * In the detail view, you can update or delete the flight.",
+  "f_no_flights": "There are no flights available.",
+  "f_departure": "Departure",
+  "f_arrival": "Arrival",
+
+  "a_page_title": "Add Flight",
+  "a_instruction": "Instructions for Adding Flight",
+  "a_instructions": "1. Fill in the departure city.\n2. Fill in the destination city.\n3. Select the departure time.\n4. Select the arrival time.\n5. Click 'Add Flight' to save the flight.",
+
+  "d_page_title": "Flight Details",
+  "d_instruction": "Instructions for Flight Details",
+  "d_instructions": "1. View the flight details.\n2. Edit the departure city or destination city.\n3. Update the departure time or arrival time if needed.\n4. Click 'Update' to save changes or 'Delete' to remove the flight."
 }
 

@@ -106,7 +106,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Customer` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `firstName` TEXT NOT NULL, `lastName` TEXT NOT NULL, `address` TEXT NOT NULL, `birthdate` INTEGER NOT NULL)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Flight` (`id` INTEGER PRIMARY KEY AUTOINCREMENT)');
+            'CREATE TABLE IF NOT EXISTS `Flight` (`id` INTEGER, `departureCity` TEXT NOT NULL, `destinationCity` TEXT NOT NULL, `departureTime` INTEGER NOT NULL, `arrivalTime` INTEGER NOT NULL, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Reservation` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `customerId` INTEGER NOT NULL)');
 
@@ -305,12 +305,44 @@ class _$FlightDAO extends FlightDAO {
     this.database,
     this.changeListener,
   )   : _queryAdapter = QueryAdapter(database, changeListener),
-        _flightInsertionAdapter = InsertionAdapter(database, 'Flight',
-            (Flight item) => <String, Object?>{'id': item.id}, changeListener),
-        _flightUpdateAdapter = UpdateAdapter(database, 'Flight', ['id'],
-            (Flight item) => <String, Object?>{'id': item.id}, changeListener),
-        _flightDeletionAdapter = DeletionAdapter(database, 'Flight', ['id'],
-            (Flight item) => <String, Object?>{'id': item.id}, changeListener);
+        _flightInsertionAdapter = InsertionAdapter(
+            database,
+            'Flight',
+            (Flight item) => <String, Object?>{
+                  'id': item.id,
+                  'departureCity': item.departureCity,
+                  'destinationCity': item.destinationCity,
+                  'departureTime':
+                      _dateTimeConverter.encode(item.departureTime),
+                  'arrivalTime': _dateTimeConverter.encode(item.arrivalTime)
+                },
+            changeListener),
+        _flightUpdateAdapter = UpdateAdapter(
+            database,
+            'Flight',
+            ['id'],
+            (Flight item) => <String, Object?>{
+                  'id': item.id,
+                  'departureCity': item.departureCity,
+                  'destinationCity': item.destinationCity,
+                  'departureTime':
+                      _dateTimeConverter.encode(item.departureTime),
+                  'arrivalTime': _dateTimeConverter.encode(item.arrivalTime)
+                },
+            changeListener),
+        _flightDeletionAdapter = DeletionAdapter(
+            database,
+            'Flight',
+            ['id'],
+            (Flight item) => <String, Object?>{
+                  'id': item.id,
+                  'departureCity': item.departureCity,
+                  'destinationCity': item.destinationCity,
+                  'departureTime':
+                      _dateTimeConverter.encode(item.departureTime),
+                  'arrivalTime': _dateTimeConverter.encode(item.arrivalTime)
+                },
+            changeListener);
 
   final sqflite.DatabaseExecutor database;
 
@@ -325,34 +357,44 @@ class _$FlightDAO extends FlightDAO {
   final DeletionAdapter<Flight> _flightDeletionAdapter;
 
   @override
-  Future<List<Flight>> getAllFlights() async {
-    return _queryAdapter.queryList('SELECT * FROM Flight',
-        mapper: (Map<String, Object?> row) => Flight(row['id'] as int?));
-  }
-
-  @override
-  Stream<Flight?> findFlightById(int id) {
-    return _queryAdapter.queryStream('SELECT * FROM Flight WHERE id = ?1',
-        mapper: (Map<String, Object?> row) => Flight(row['id'] as int?),
-        arguments: [id],
+  Stream<List<Flight>> watchAllFlights() {
+    return _queryAdapter.queryListStream('SELECT * FROM Flight',
+        mapper: (Map<String, Object?> row) => Flight(
+            id: row['id'] as int?,
+            departureCity: row['departureCity'] as String,
+            destinationCity: row['destinationCity'] as String,
+            departureTime:
+                _dateTimeConverter.decode(row['departureTime'] as int),
+            arrivalTime: _dateTimeConverter.decode(row['arrivalTime'] as int)),
         queryableName: 'Flight',
         isView: false);
   }
 
   @override
-  Future<int> insertFlight(Flight item) {
-    return _flightInsertionAdapter.insertAndReturnId(
-        item, OnConflictStrategy.abort);
+  Future<List<Flight>> getAllFlights() async {
+    return _queryAdapter.queryList('SELECT * FROM Flight',
+        mapper: (Map<String, Object?> row) => Flight(
+            id: row['id'] as int?,
+            departureCity: row['departureCity'] as String,
+            destinationCity: row['destinationCity'] as String,
+            departureTime:
+                _dateTimeConverter.decode(row['departureTime'] as int),
+            arrivalTime: _dateTimeConverter.decode(row['arrivalTime'] as int)));
   }
 
   @override
-  Future<void> updateFlight(Flight item) async {
-    await _flightUpdateAdapter.update(item, OnConflictStrategy.abort);
+  Future<void> insertFlight(Flight flight) async {
+    await _flightInsertionAdapter.insert(flight, OnConflictStrategy.abort);
   }
 
   @override
-  Future<void> deleteFlight(Flight item) async {
-    await _flightDeletionAdapter.delete(item);
+  Future<void> updateFlight(Flight flight) async {
+    await _flightUpdateAdapter.update(flight, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> deleteFlight(Flight flight) async {
+    await _flightDeletionAdapter.delete(flight);
   }
 }
 
