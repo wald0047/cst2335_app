@@ -59,5 +59,28 @@
   "d_page_title": "Flight Details",
   "d_instruction": "Instructions for Flight Details",
   "d_instructions": "1. View the flight details.\n2. Edit the departure city or destination city.\n3. Update the departure time or arrival time if needed.\n4. Click 'Update' to save changes or 'Delete' to remove the flight."
+  "c_birthdate_error_message": "Please select your birthdate.",
+
+  "a_title": "Airplane",
+  "a_nosel": "Nothing is selected",
+  "a_update": "Update",
+  "a_unsel": "Unselect",
+  "a_delete": "Delete",
+  "a_add": "Add",
+  "a_clear": "Clear",
+  "a_planes_c": "Planes:",
+  "a_new_p": "New Plane:",
+  "a_typehint" : "What is the plane called?",
+  "a_typelabel": "Plane's name",
+  "a_confirmdel_t": "Confirm Airplane Removal",
+  "a_confirmdel_c":"Are you sure you would like to remove:\n",
+  "a_yes":"Yes",
+  "a_no":"No",
+  "a_pass_hint":"What is the number of passengers?",
+  "a_pass_label": "Number of passengers",
+  "a_range_hint": "What is the range of the plane?",
+  "a_range_label": "Range (km)",
+  "a_spd_label": "Speed (km/h)",
+  "a_spd_hint": "What is the max speed of the plane?"
 }
 
