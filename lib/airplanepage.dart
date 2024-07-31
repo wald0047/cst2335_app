@@ -79,28 +79,29 @@ class AirplanePageState extends State<AirplanePage> {
     });
     MyApp.setLocale(context, locale); // Assuming MyApp is the root widget.
   }
+
   @override
   Widget build(BuildContext context) {
     var trans = AppLocalizations.of(context)!;
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(trans.translate('a_title')),
-          actions: <Widget>[
-        IconButton(
-        icon: Icon(Icons.g_translate,
-          color: _locale.languageCode == 'en'
-              ? null
-              : Colors.grey[600],
-        ),
-      onPressed: () {
-        changeLocale(
-          _locale.languageCode == 'en' ? const Locale('fr', 'CA') : const Locale('en', 'CA'),
-        );
-      }, // Switch the language when pressed
-    ),
-    ]
-        ),
+            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            title: Text(trans.translate('a_title')),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.g_translate,
+                  color: _locale.languageCode == 'en' ? null : Colors.grey[600],
+                ),
+                onPressed: () {
+                  changeLocale(
+                    _locale.languageCode == 'en'
+                        ? const Locale('fr', 'CA')
+                        : const Locale('en', 'CA'),
+                  );
+                }, // Switch the language when pressed
+              ),
+            ]),
         body: responsiveLayout());
   }
 
@@ -133,8 +134,8 @@ class AirplanePageState extends State<AirplanePage> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Row(children: [
-          Text(textAlign: TextAlign.left,
-              trans.translate("a_planes_c"))]),
+          Text(textAlign: TextAlign.left, trans.translate("a_planes_c"))
+        ]),
         ListView.builder(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -191,7 +192,8 @@ class AirplanePageState extends State<AirplanePage> {
         context: context,
         builder: (BuildContext context) => AlertDialog(
           title: Text(trans.translate("a_confirmdel_t")),
-          content: Text('${trans.translate("a_confirmdel_c")}${planes[index].type}'),
+          content:
+              Text('${trans.translate("a_confirmdel_c")}${planes[index].type}'),
           actions: <Widget>[
             TextButton(
               child: Text(trans.translate("a_yes")),
@@ -227,59 +229,61 @@ class AirplanePageState extends State<AirplanePage> {
       Airplane plane = selectedPlane!;
       var edit = [
         PlaneForm(),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          Padding(
-              padding: EdgeInsets.all(4),
-              child: ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      selectedPlane = null;
-                    });
-                  },
-                  child: Text(trans.translate("a_unsel")))),
-          Padding(
-              padding: EdgeInsets.all(4),
-              child: ElevatedButton(
-                  onPressed: () {
-                    int index = planes.indexOf(selectedPlane!);
-                    Airplane newPlane = Airplane(
-                        selectedPlane?.id,
-                        typeTextCtl.value.text,
-                        int.parse(passengerTextCtl.value.text),
-                        int.parse(speedTextCtl.value.text),
-                        int.parse(rangeTextCtl.value.text));
-                    airplaneDAO.updateAirplane(newPlane);
-                    setState(() {
-                      planes[index] = newPlane;
-                      selectedPlane = newPlane;
-                    });
-                  },
-                  child: Text(trans.translate("a_update")))),
-          Padding(
-              padding: EdgeInsets.all(4),
-              child: ElevatedButton(
-                  onPressed: () {
-                    deleteAirplane(plane);
-                  },
-                  child: Text(trans.translate("a_delete")))),
-        ]),
+        Container(
+            margin: EdgeInsets.all(4),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          selectedPlane = null;
+                        });
+                      },
+                      child: Text(trans.translate("a_unsel"))),
+                  ElevatedButton(
+                      onPressed: () {
+                        int index = planes.indexOf(selectedPlane!);
+                        Airplane newPlane = Airplane(
+                            selectedPlane?.id,
+                            typeTextCtl.value.text,
+                            int.parse(passengerTextCtl.value.text),
+                            int.parse(speedTextCtl.value.text),
+                            int.parse(rangeTextCtl.value.text));
+                        airplaneDAO.updateAirplane(newPlane);
+                        setState(() {
+                          planes[index] = newPlane;
+                          selectedPlane = newPlane;
+                        });
+                      },
+                      child: Text(trans.translate("a_update"))),
+                  ElevatedButton(
+                      onPressed: () {
+                        deleteAirplane(plane);
+                      },
+                      child: Text(trans.translate("a_delete"))),
+                ])),
       ];
       var add = [
         PlaneForm(),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          ElevatedButton(
-              onPressed: () {
-                addPlane();
-              },
-              child: Text(trans.translate("a_add"))),
-          ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  selectedPlane = null;
-                });
-              },
-              child: Text(trans.translate("a_clear"))),
-        ])
+        Container(
+            margin: EdgeInsets.all(4),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        addPlane();
+                      },
+                      child: Text(trans.translate("a_add"))),
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          selectedPlane = null;
+                        });
+                      },
+                      child: Text(trans.translate("a_clear"))),
+                ]))
       ];
       if (selectedPlane!.id == null) {
         return Column(children: add);
