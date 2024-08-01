@@ -307,7 +307,7 @@ class CustomerFormState extends State<CustomerForm> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return AppLocalizations.of(context)!
-                              .translate('c_error_text')!;
+                              .translate('c_first_name_error_text')!;
                         }
                         return null;
                       },
@@ -366,7 +366,7 @@ class CustomerFormState extends State<CustomerForm> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return AppLocalizations.of(context)!
-                              .translate('c_birthdate_error_text')!;
+                              .translate('c_birthdate_error_message')!;
                         }
                         return null;
                       },
