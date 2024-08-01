@@ -112,7 +112,7 @@ class CustomerPageState extends State<CustomerPage> {
   /// Builds the widget for the customer form.
   Widget formPage() {
     return CustomerForm(
-        dao: dao,
+        getDao: (Function(CustomerDAO) fn){ fn(dao); },
         isAdding: isAdding,
         selectedItem: selectedItem,
         onSuccess: _loadCustomers, // Reload the customers on success.

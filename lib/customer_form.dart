@@ -9,7 +9,7 @@ class CustomerForm extends StatefulWidget {
   final bool
       isAdding; // Flag to indicate if the form is for adding a new customer
   final Customer? selectedItem; // The customer being edited (if any)
-  final CustomerDAO dao; // Data Access Object for customer operations
+  final Function(Function(CustomerDAO)) getDao; // Data Access Object for customer operations
   final VoidCallback
       onSuccess; // Callback function to invoke on successful operation
   final VoidCallback
@@ -18,7 +18,7 @@ class CustomerForm extends StatefulWidget {
   const CustomerForm({
     super.key,
     required this.isAdding,
-    required this.dao,
+    required this.getDao,
     required this.onSuccess,
     required this.onClose,
     this.selectedItem,
@@ -162,8 +162,8 @@ class CustomerFormState extends State<CustomerForm> {
                         _addressController.value.text,
                         birthdate);
                     widget.isAdding
-                        ? widget.dao.insertCustomer(item)
-                        : widget.dao.updateCustomer(item);
+                        ? widget.getDao((dao){dao.insertCustomer(item);})
+                        : widget.getDao((dao){dao.updateCustomer(item);});
                     widget.onSuccess();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -219,7 +219,7 @@ class CustomerFormState extends State<CustomerForm> {
               onPressed: () {
                 if (_formKey.currentState?.validate() == true) {
                   try {
-                    widget.dao.deleteCustomer(widget.selectedItem!);
+                    widget.getDao((dao) {dao.deleteCustomer(widget.selectedItem!);});
                     widget.onSuccess();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
