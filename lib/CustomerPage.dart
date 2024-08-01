@@ -70,9 +70,9 @@ class CustomerPageState extends State<CustomerPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.translate('c_instruction')!),
+          title: Text(AppLocalizations.of(context)!.translate('c_instruction')),
           content: Text(
-            AppLocalizations.of(context)!.translate('c_instructions')!,
+            AppLocalizations.of(context)!.translate('c_instructions'),
           ),
           actions: <Widget>[
             TextButton(
@@ -156,7 +156,7 @@ class CustomerPageState extends State<CustomerPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(AppLocalizations.of(context)!.translate('c_page_title')!),
+        title: Text(AppLocalizations.of(context)!.translate('c_page_title')),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.g_translate,

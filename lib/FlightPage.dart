@@ -44,16 +44,16 @@ class _FlightPageState extends State<FlightPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.translate('f_instruction')!),
+          title: Text(AppLocalizations.of(context)!.translate('f_instruction')),
           content: Text(
-            AppLocalizations.of(context)!.translate('f_instructions')!,
+            AppLocalizations.of(context)!.translate('f_instructions'),
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text(AppLocalizations.of(context)!.translate('c_confirm_button')!),
+              child: Text(AppLocalizations.of(context)!.translate('c_confirm_button')),
             ),
           ],
         );
@@ -104,7 +104,7 @@ class _FlightPageState extends State<FlightPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(AppLocalizations.of(context)!.translate('f_page_title')!),
+        title: Text(AppLocalizations.of(context)!.translate('f_page_title')),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.g_translate,
@@ -181,7 +181,7 @@ class _FlightPageState extends State<FlightPage> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text(AppLocalizations.of(context)!.translate('f_no_flights')!));
+            return Center(child: Text(AppLocalizations.of(context)!.translate('f_no_flights')));
           }
 
           final flights = snapshot.data!;
@@ -196,8 +196,8 @@ class _FlightPageState extends State<FlightPage> {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('${AppLocalizations.of(context)!.translate('f_departure')!}: ${DateFormat('yyyy-MM-dd').format(flight.departureTime)}'),
-                      Text('${AppLocalizations.of(context)!.translate('f_arrival')!}: ${DateFormat('yyyy-MM-dd').format(flight.arrivalTime)}'),
+                      Text('${AppLocalizations.of(context)!.translate('f_departure')}: ${DateFormat('yyyy-MM-dd').format(flight.departureTime)}'),
+                      Text('${AppLocalizations.of(context)!.translate('f_arrival')}: ${DateFormat('yyyy-MM-dd').format(flight.arrivalTime)}'),
                     ],
                   ),
                   onTap: () {

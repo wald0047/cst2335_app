@@ -52,9 +52,9 @@ class CustomerListState extends State<CustomerList> {
                 child: TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context)!.translate('c_search_hint_text')!, // Placeholder text
+                    hintText: AppLocalizations.of(context)!.translate('c_search_hint_text'), // Placeholder text
                     border: const OutlineInputBorder(), // Border style
-                    labelText: AppLocalizations.of(context)!.translate('c_customer')!, // Label text
+                    labelText: AppLocalizations.of(context)!.translate('c_customer'), // Label text
                   ),
                 ),
               ),
@@ -79,7 +79,7 @@ class CustomerListState extends State<CustomerList> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(Icons.add), // Add icon
-                Text(AppLocalizations.of(context)!.translate('c_add_button')!), // Button text
+                Text(AppLocalizations.of(context)!.translate('c_add_button')), // Button text
               ],
             ),
           ),
@@ -89,7 +89,7 @@ class CustomerListState extends State<CustomerList> {
             child: widget.customers.isEmpty
                 ? Center(
               child: Text(
-                AppLocalizations.of(context)!.translate('c_no_customers')!, // Message when no customers
+                AppLocalizations.of(context)!.translate('c_no_customers'), // Message when no customers
                 style: const TextStyle(
                   color: Colors.grey,
                   fontSize: 16.0,

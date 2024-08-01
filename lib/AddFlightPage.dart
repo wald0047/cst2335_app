@@ -62,16 +62,16 @@ class _AddFlightPageState extends State<AddFlightPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.translate('f_instruction')!),
+          title: Text(AppLocalizations.of(context)!.translate('f_instruction')),
           content: Text(
-            AppLocalizations.of(context)!.translate('f_instructions')!,
+            AppLocalizations.of(context)!.translate('f_instructions'),
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text(AppLocalizations.of(context)!.translate('c_confirm_button')!),
+              child: Text(AppLocalizations.of(context)!.translate('c_confirm_button')),
             ),
           ],
         );
