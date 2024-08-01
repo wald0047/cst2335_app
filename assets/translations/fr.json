@@ -14,10 +14,17 @@
   "a_confirmdel_c":"Êtes-vous certain que vous voulez supprimer:\n",
   "a_yes":"Oui",
   "a_no":"Non",
+  "a_ok":"Ok",
   "a_pass_hint": "Quel est le nombre de passagers?",
   "a_pass_label": "Nombre de passagers",
   "a_range_hint": "Quel est la portée de l'avion ?",
   "a_range_label": "Portée (km)",
   "a_spd_label": "Vitesse maximale (km/h)",
-  "a_spd_hint": "Quelle est la vitesse maximale de l'avion?"
+  "a_spd_hint": "Quelle est la vitesse maximale de l'avion?",
+  "a_instructions_t" : "Instructions",
+  "a_instructions_c" : "1. Ajouter un nouvel avion:\n  * Cliquez sur le bouton + dans la liste des avions.\n  * Entrez les détails de l'avion dans le formulaire.\n  * Cliquez sur le bouton Ajouter.\n\n2. Sélectionner un avion.\n  * Cliquez sur le nom de l'avion dans la liste des avions.\n\n3. Mis a jour d'un avion:\n  * Sélectionnez un avion.\n  * Modifiez ses détails dans le formulaire.\n  * Cliquez sur le bouton 'Actualiser'.",
+  "a_trans": "Translate:",
+  "a_reload": "Données précédentes",
+  "a_added": "Avion Ajouté",
+  "a_updated":"Avion mis à jour"
 }

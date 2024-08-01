@@ -58,8 +58,7 @@
 
   "d_page_title": "Flight Details",
   "d_instruction": "Instructions for Flight Details",
-  "d_instructions": "1. View the flight details.\n2. Edit the departure city or destination city.\n3. Update the departure time or arrival time if needed.\n4. Click 'Update' to save changes or 'Delete' to remove the flight."
-  "c_birthdate_error_message": "Please select your birthdate.",
+  "d_instructions": "1. View the flight details.\n2. Edit the departure city or destination city.\n3. Update the departure time or arrival time if needed.\n4. Click 'Update' to save changes or 'Delete' to remove the flight.",
 
   "a_title": "Airplane",
   "a_nosel": "Nothing is selected",
@@ -76,11 +75,18 @@
   "a_confirmdel_c":"Are you sure you would like to remove:\n",
   "a_yes":"Yes",
   "a_no":"No",
+  "a_ok":"Ok",
   "a_pass_hint":"What is the number of passengers?",
   "a_pass_label": "Number of passengers",
   "a_range_hint": "What is the range of the plane?",
   "a_range_label": "Range (km)",
   "a_spd_label": "Speed (km/h)",
-  "a_spd_hint": "What is the max speed of the plane?"
+  "a_spd_hint": "What is the max speed of the plane?",
+  "a_instructions_t" : "Instructions",
+  "a_instructions_c" : "1. Add a New Plane:\n  * Click the + button in the plane list.\n  * Enter the planes details into the form.\n  * Click the Add button.\n\n2.Select Plane:\n  * Click the name of the plane in the plane list.\n\n3. Edit an Existing Plane:\n  * Select a plane.\n  * Edit its details in the form.\n  * Click the Update button.",
+  "a_trans": "Traduire:",
+  "a_reload" : "Reload Previous",
+  "a_added": "Plane Added",
+  "a_updated":"Plane Updated"
 }
 

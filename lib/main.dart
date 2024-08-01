@@ -29,6 +29,10 @@ class MyApp extends StatefulWidget {
     MyAppState? state = context.findAncestorStateOfType<MyAppState>();
     state?.changeLanguage(newLocale);
   }
+  static Locale? getLocale(BuildContext context) {
+    MyAppState? state = context.findAncestorStateOfType<MyAppState>();
+    return state?._locale;
+  }
 }
 
 class MyAppState extends State<MyApp> {
@@ -47,6 +51,7 @@ class MyAppState extends State<MyApp> {
         value: widget.flightRepository,
     child: MaterialApp(
         title: 'Final Project',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
@@ -60,6 +65,7 @@ class MyAppState extends State<MyApp> {
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate
         ],
         locale: _locale,
         // home: const MyHomePage(title: 'Home'),
