@@ -78,16 +78,16 @@ class _FlightDetailPageState extends State<FlightDetailPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.translate('f_instruction')!),
+          title: Text(AppLocalizations.of(context)!.translate('f_instruction')),
           content: Text(
-            AppLocalizations.of(context)!.translate('f_instructions')!,
+            AppLocalizations.of(context)!.translate('f_instructions'),
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text(AppLocalizations.of(context)!.translate('c_confirm_button')!),
+              child: Text(AppLocalizations.of(context)!.translate('c_confirm_button')),
             ),
           ],
         );
@@ -118,13 +118,13 @@ class _FlightDetailPageState extends State<FlightDetailPage> {
               onPressed: () {
                 Navigator.of(context).pop(true);
               },
-              child: Text(AppLocalizations.of(context)!.translate('c_confirm_button')!),
+              child: Text(AppLocalizations.of(context)!.translate('c_confirm_button')),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
-              child: Text(AppLocalizations.of(context)!.translate('c_cancel_button')!),
+              child: Text(AppLocalizations.of(context)!.translate('c_cancel_button')),
             ),
           ],
         );
@@ -166,13 +166,13 @@ class _FlightDetailPageState extends State<FlightDetailPage> {
               onPressed: () {
                 Navigator.of(context).pop(true);
               },
-              child: Text(AppLocalizations.of(context)!.translate('c_confirm_button')!),
+              child: Text(AppLocalizations.of(context)!.translate('c_confirm_button')),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
-              child: Text(AppLocalizations.of(context)!.translate('c_cancel_button')!),
+              child: Text(AppLocalizations.of(context)!.translate('c_cancel_button')),
             ),
           ],
         );

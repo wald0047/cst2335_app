@@ -9,7 +9,7 @@ class CustomerForm extends StatefulWidget {
   final bool
       isAdding; // Flag to indicate if the form is for adding a new customer
   final Customer? selectedItem; // The customer being edited (if any)
-  final CustomerDAO dao; // Data Access Object for customer operations
+  final Function(Function(CustomerDAO)) getDao; // Data Access Object for customer operations
   final VoidCallback
       onSuccess; // Callback function to invoke on successful operation
   final VoidCallback
@@ -18,7 +18,7 @@ class CustomerForm extends StatefulWidget {
   const CustomerForm({
     super.key,
     required this.isAdding,
-    required this.dao,
+    required this.getDao,
     required this.onSuccess,
     required this.onClose,
     this.selectedItem,
@@ -137,16 +137,16 @@ class CustomerFormState extends State<CustomerForm> {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: Text(AppLocalizations.of(context)!.translate('c_alert_title')!),
+        title: Text(AppLocalizations.of(context)!.translate('c_alert_title')),
         content: Text(widget.isAdding
             ? AppLocalizations.of(context)!
-                .translate('c_create_customer_message')!
+                .translate('c_create_customer_message')
             : AppLocalizations.of(context)!
-                .translate('c_update_customer_message')!),
+                .translate('c_update_customer_message')),
         actions: <Widget>[
           ElevatedButton(
               child: Text(
-                  AppLocalizations.of(context)!.translate('c_confirm_button')!),
+                  AppLocalizations.of(context)!.translate('c_confirm_button')),
               onPressed: () {
                 if (_formKey.currentState?.validate() == true) {
                   try {
@@ -162,16 +162,16 @@ class CustomerFormState extends State<CustomerForm> {
                         _addressController.value.text,
                         birthdate);
                     widget.isAdding
-                        ? widget.dao.insertCustomer(item)
-                        : widget.dao.updateCustomer(item);
+                        ? widget.getDao((dao){dao.insertCustomer(item);})
+                        : widget.getDao((dao){dao.updateCustomer(item);});
                     widget.onSuccess();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                           content: Text(widget.isAdding
                               ? AppLocalizations.of(context)!.translate(
-                                  'c_create_customer_success_message')!
+                                  'c_create_customer_success_message')
                               : AppLocalizations.of(context)!.translate(
-                                  'c_update_customer_success_message')!),
+                                  'c_update_customer_success_message')),
                           backgroundColor: Colors.green),
                     );
                     if (widget.isAdding) {
@@ -183,10 +183,10 @@ class CustomerFormState extends State<CustomerForm> {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(widget.isAdding
                             ? AppLocalizations.of(context)!.translate(
-                                    'c_create_customer_fail_message')! +
+                                    'c_create_customer_fail_message') +
                                 e.toString()
                             : AppLocalizations.of(context)!.translate(
-                                    'c_update_customer_fail_message')! +
+                                    'c_update_customer_fail_message') +
                                 e.toString()),
                         backgroundColor: Colors.red));
                   }
@@ -195,7 +195,7 @@ class CustomerFormState extends State<CustomerForm> {
               }),
           ElevatedButton(
               child: Text(
-                  AppLocalizations.of(context)!.translate('c_cancel_button')!),
+                  AppLocalizations.of(context)!.translate('c_cancel_button')),
               onPressed: () {
                 Navigator.pop(context);
               }),
@@ -209,22 +209,22 @@ class CustomerFormState extends State<CustomerForm> {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: Text(AppLocalizations.of(context)!.translate('c_alert_title')!),
+        title: Text(AppLocalizations.of(context)!.translate('c_alert_title')),
         content: Text(AppLocalizations.of(context)!
-            .translate('c_delete_customer_message')!),
+            .translate('c_delete_customer_message')),
         actions: <Widget>[
           ElevatedButton(
               child: Text(
-                  AppLocalizations.of(context)!.translate('c_confirm_button')!),
+                  AppLocalizations.of(context)!.translate('c_confirm_button')),
               onPressed: () {
                 if (_formKey.currentState?.validate() == true) {
                   try {
-                    widget.dao.deleteCustomer(widget.selectedItem!);
+                    widget.getDao((dao) {dao.deleteCustomer(widget.selectedItem!);});
                     widget.onSuccess();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                           content: Text(AppLocalizations.of(context)!
-                              .translate('c_delete_customer_success_message')!),
+                              .translate('c_delete_customer_success_message')),
                           backgroundColor: Colors.green),
                     );
                     _clearForm();
@@ -232,7 +232,7 @@ class CustomerFormState extends State<CustomerForm> {
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(AppLocalizations.of(context)!
-                                .translate('c_delete_customer_fail_message')! +
+                                .translate('c_delete_customer_fail_message') +
                             e.toString()),
                         backgroundColor: Colors.red));
                   }
@@ -241,7 +241,7 @@ class CustomerFormState extends State<CustomerForm> {
               }),
           ElevatedButton(
               child: Text(
-                  AppLocalizations.of(context)!.translate('c_cancel_button')!),
+                  AppLocalizations.of(context)!.translate('c_cancel_button')),
               onPressed: () {
                 Navigator.pop(context);
               }),
@@ -272,7 +272,7 @@ class CustomerFormState extends State<CustomerForm> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           Text(AppLocalizations.of(context)!
-                              .translate('c_load_customer_data_message')!),
+                              .translate('c_load_customer_data_message')),
                           const SizedBox(width: 8),
                           Switch(
                             value: switchValue,
@@ -300,14 +300,14 @@ class CustomerFormState extends State<CustomerForm> {
                       decoration: InputDecoration(
                           icon: const Icon(Icons.person),
                           hintText: AppLocalizations.of(context)!
-                              .translate('c_first_name_hint_text')!,
+                              .translate('c_first_name_hint_text'),
                           border: const OutlineInputBorder(),
                           labelText: AppLocalizations.of(context)!
-                              .translate('c_first_name_label')!),
+                              .translate('c_first_name_label')),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return AppLocalizations.of(context)!
-                              .translate('c_first_name_error_text')!;
+                              .translate('c_first_name_error_text');
                         }
                         return null;
                       },
@@ -318,14 +318,14 @@ class CustomerFormState extends State<CustomerForm> {
                       decoration: InputDecoration(
                           icon: const Icon(Icons.perm_identity),
                           hintText: AppLocalizations.of(context)!
-                              .translate('c_last_name_hint_text')!,
+                              .translate('c_last_name_hint_text'),
                           border: const OutlineInputBorder(),
                           labelText: AppLocalizations.of(context)!
-                              .translate('c_last_name_label')!),
+                              .translate('c_last_name_label')),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return AppLocalizations.of(context)!
-                              .translate('c_last_name_error_text')!;
+                              .translate('c_last_name_error_text');
                         }
                         return null;
                       },
@@ -336,14 +336,14 @@ class CustomerFormState extends State<CustomerForm> {
                       decoration: InputDecoration(
                           icon: const Icon(Icons.house_rounded),
                           hintText: AppLocalizations.of(context)!
-                              .translate('c_address_hint_text')!,
+                              .translate('c_address_hint_text'),
                           border: const OutlineInputBorder(),
                           labelText: AppLocalizations.of(context)!
-                              .translate('c_address_label')!),
+                              .translate('c_address_label')),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return AppLocalizations.of(context)!
-                              .translate('c_address_error_text')!;
+                              .translate('c_address_error_text');
                         }
                         return null;
                       },
@@ -355,10 +355,10 @@ class CustomerFormState extends State<CustomerForm> {
                       decoration: InputDecoration(
                         icon: const Icon(Icons.calendar_today),
                         hintText: AppLocalizations.of(context)!
-                            .translate('c_birthdate_hint_text')!,
+                            .translate('c_birthdate_hint_text'),
                         border: const OutlineInputBorder(),
                         labelText: AppLocalizations.of(context)!
-                            .translate('c_birthdate_label')!,
+                            .translate('c_birthdate_label'),
                       ),
                       onTap: () {
                         _selectDate(context);
@@ -366,7 +366,7 @@ class CustomerFormState extends State<CustomerForm> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return AppLocalizations.of(context)!
-                              .translate('c_birthdate_error_message')!;
+                              .translate('c_birthdate_error_message');
                         }
                         return null;
                       },
@@ -379,20 +379,20 @@ class CustomerFormState extends State<CustomerForm> {
                             onPressed: handleSubmit,
                             child: Text(widget.isAdding
                                 ? AppLocalizations.of(context)!
-                                    .translate('c_create_button')!
+                                    .translate('c_create_button')
                                 : AppLocalizations.of(context)!
-                                    .translate('c_update_button')!)),
+                                    .translate('c_update_button'))),
                         const SizedBox(width: 12),
                         if (!widget.isAdding)
                           ElevatedButton(
                               onPressed: handleDelete,
                               child: Text(AppLocalizations.of(context)!
-                                  .translate('c_delete_button')!)),
+                                  .translate('c_delete_button'))),
                         const SizedBox(width: 12),
                         ElevatedButton(
                             onPressed: widget.onClose,
                             child: Text(AppLocalizations.of(context)!
-                                .translate('c_cancel_button')!)),
+                                .translate('c_cancel_button'))),
                       ],
                     )
                   ],
@@ -401,7 +401,7 @@ class CustomerFormState extends State<CustomerForm> {
             : Center(
                 child: Text(
                     AppLocalizations.of(context)!
-                        .translate('c_no_selected_customer_message')!,
+                        .translate('c_no_selected_customer_message'),
                     style: const TextStyle(
                         color: Colors.grey,
                         fontSize: 24.0,
