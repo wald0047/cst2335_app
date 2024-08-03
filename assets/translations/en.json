@@ -43,7 +43,6 @@
 
   "c_birthdate_label": "Birthdate",
   "c_birthdate_hint_text": "Select your birthdate ...",
-  "c_birthdate_error_message": "Please select your birthdate.",
 
   "f_page_title": "Flights",
   "f_instruction": "Instructions",
@@ -58,7 +57,7 @@
 
   "d_page_title": "Flight Details",
   "d_instruction": "Instructions for Flight Details",
-  "d_instructions": "1. View the flight details.\n2. Edit the departure city or destination city.\n3. Update the departure time or arrival time if needed.\n4. Click 'Update' to save changes or 'Delete' to remove the flight."
+  "d_instructions": "1. View the flight details.\n2. Edit the departure city or destination city.\n3. Update the departure time or arrival time if needed.\n4. Click 'Update' to save changes or 'Delete' to remove the flight.",
   "c_birthdate_error_message": "Please select your birthdate.",
 
   "a_title": "Airplane",

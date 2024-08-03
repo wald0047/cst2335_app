@@ -102,7 +102,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Airplane` (`id` INTEGER PRIMARY KEY AUTOINCREMENT)');
+            'CREATE TABLE IF NOT EXISTS `Airplane` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `type` TEXT NOT NULL, `numPassengers` INTEGER NOT NULL, `maxSpeed` INTEGER NOT NULL, `range` INTEGER NOT NULL)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Customer` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `firstName` TEXT NOT NULL, `lastName` TEXT NOT NULL, `address` TEXT NOT NULL, `birthdate` INTEGER NOT NULL)');
         await database.execute(
@@ -146,19 +146,37 @@ class _$AirplaneDAO extends AirplaneDAO {
         _airplaneInsertionAdapter = InsertionAdapter(
             database,
             'Airplane',
-            (Airplane item) => <String, Object?>{'id': item.id},
+            (Airplane item) => <String, Object?>{
+                  'id': item.id,
+                  'type': item.type,
+                  'numPassengers': item.numPassengers,
+                  'maxSpeed': item.maxSpeed,
+                  'range': item.range
+                },
             changeListener),
         _airplaneUpdateAdapter = UpdateAdapter(
             database,
             'Airplane',
             ['id'],
-            (Airplane item) => <String, Object?>{'id': item.id},
+            (Airplane item) => <String, Object?>{
+                  'id': item.id,
+                  'type': item.type,
+                  'numPassengers': item.numPassengers,
+                  'maxSpeed': item.maxSpeed,
+                  'range': item.range
+                },
             changeListener),
         _airplaneDeletionAdapter = DeletionAdapter(
             database,
             'Airplane',
             ['id'],
-            (Airplane item) => <String, Object?>{'id': item.id},
+            (Airplane item) => <String, Object?>{
+                  'id': item.id,
+                  'type': item.type,
+                  'numPassengers': item.numPassengers,
+                  'maxSpeed': item.maxSpeed,
+                  'range': item.range
+                },
             changeListener);
 
   final sqflite.DatabaseExecutor database;
@@ -176,32 +194,42 @@ class _$AirplaneDAO extends AirplaneDAO {
   @override
   Future<List<Airplane>> getAllAirplanes() async {
     return _queryAdapter.queryList('SELECT * FROM Airplane',
-        mapper: (Map<String, Object?> row) => Airplane(row['id'] as int?));
+        mapper: (Map<String, Object?> row) => Airplane(
+            row['id'] as int?,
+            row['type'] as String,
+            row['numPassengers'] as int,
+            row['maxSpeed'] as int,
+            row['range'] as int));
   }
 
   @override
   Stream<Airplane?> findAirplaneById(int id) {
     return _queryAdapter.queryStream('SELECT * FROM Airplane WHERE id = ?1',
-        mapper: (Map<String, Object?> row) => Airplane(row['id'] as int?),
+        mapper: (Map<String, Object?> row) => Airplane(
+            row['id'] as int?,
+            row['type'] as String,
+            row['numPassengers'] as int,
+            row['maxSpeed'] as int,
+            row['range'] as int),
         arguments: [id],
         queryableName: 'Airplane',
         isView: false);
   }
 
   @override
-  Future<int> insertAirplane(Airplane item) {
+  Future<int> insertAirplane(Airplane plane) {
     return _airplaneInsertionAdapter.insertAndReturnId(
-        item, OnConflictStrategy.abort);
+        plane, OnConflictStrategy.abort);
   }
 
   @override
-  Future<void> updateAirplane(Airplane item) async {
-    await _airplaneUpdateAdapter.update(item, OnConflictStrategy.abort);
+  Future<void> updateAirplane(Airplane plane) async {
+    await _airplaneUpdateAdapter.update(plane, OnConflictStrategy.abort);
   }
 
   @override
-  Future<void> deleteAirplane(Airplane item) async {
-    await _airplaneDeletionAdapter.delete(item);
+  Future<void> deleteAirplane(Airplane plane) async {
+    await _airplaneDeletionAdapter.delete(plane);
   }
 }
 
