@@ -112,6 +112,13 @@
   "r_error_loading_customers": "Error loading customers",
   "r_error_loading_flights": "Error loading flights",
   "r_flight_departure_city": "Departure City",
-  "r_flight_destination_city": "Destination City"
+  "r_flight_destination_city": "Destination City",
+  "instructions_title": "Instructions",
+  "instructions_content": "1. To add a reservation, press the '+' button.\n2. Select a customer and a flight.\n3. Press 'Add' to create the reservation.\n4. View reservation details by tapping on any reservation item.",
+  "r_flight": "Flight",
+  "cancel": "Cancel",
+  "add": "Add",
+  "show_instructions": "Show Instructions",
+  "language_changed": "Language changed successfully"
 }
 
