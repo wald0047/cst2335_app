@@ -1,14 +1,14 @@
-import 'package:cst2335_app/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cst2335_app/AppLocalizations.dart';
-import 'package:cst2335_app/main.dart';
-import 'package:cst2335_app/customer.dart';
+import 'package:cst2335_app/database.dart';
 import 'package:cst2335_app/flight.dart';
 import 'package:cst2335_app/flightRepository.dart';
+import 'package:cst2335_app/customer.dart';
 import 'package:cst2335_app/customerdao.dart';
 import 'package:cst2335_app/reservationdao.dart';
 import 'package:cst2335_app/reservation.dart';
+import 'package:cst2335_app/main.dart';
 
 class ReservationPage extends StatefulWidget {
   const ReservationPage({Key? key}) : super(key: key);
@@ -23,6 +23,12 @@ class _ReservationPageState extends State<ReservationPage> {
   late ReservationDAO reservationDAO;
   List<Reservation> reservations = [];
   Locale _locale = const Locale("en", "CA");
+
+  final List<Locale> _supportedLocales = [
+    const Locale('en', 'CA'),
+    const Locale('zh', 'CN'),
+    const Locale('fr', 'FR'),
+  ];
 
   @override
   void initState() {
@@ -39,13 +45,11 @@ class _ReservationPageState extends State<ReservationPage> {
   }
 
   void _loadReservations() async {
-    // Load reservations from the database
     final loadedReservations = await reservationDAO.getAllReservations();
     setState(() {
       reservations = loadedReservations;
     });
   }
-
 
   void _changeLanguage(Locale locale) {
     setState(() {
@@ -54,75 +58,6 @@ class _ReservationPageState extends State<ReservationPage> {
     MyApp.setLocale(context, locale);
   }
 
-
-  void _showAddReservationDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AddReservationDialog(
-          customerDAO: customerDAO, // Pass the customerDAO directly
-          flightRepository: flightRepository, // Pass flightRepository
-          onReservationAdded: (int customerId, int flightId) async {
-            final newReservation = Reservation.noid(customerId, flightId);
-            final insertedId = await reservationDAO.insertReservation(newReservation);
-            if (insertedId != null) {
-              _loadReservations(); // Reload the reservations list
-            }
-          },
-        );
-      },
-    );
-  }
-
-  @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-  //       title: Text(AppLocalizations.of(context)!.translate('r_page_title')!),
-  //       actions: <Widget>[
-  //         IconButton(
-  //           icon: Icon(Icons.g_translate),
-  //           onPressed: () {
-  //             _changeLanguage(
-  //               _locale.languageCode == 'en' ? const Locale('zh', 'CN') : const Locale('en', 'CA'),
-  //             );
-  //           },
-  //         ),
-  //       ],
-  //     ),
-  //     body: ListView.builder(
-  //       itemCount: reservations.length,
-  //       itemBuilder: (context, index) {
-  //         final reservation = reservations[index];
-  //         return StreamBuilder<Customer?>(
-  //           stream: customerDAO.findCustomerById(reservation.customerId),
-  //           builder: (context, snapshot) {
-  //             if (snapshot.connectionState == ConnectionState.waiting) {
-  //               return ListTile(title: Text('Loading...'));
-  //             }
-  //             if (snapshot.hasError) {
-  //               return ListTile(title: Text('Error loading customer'));
-  //             }
-  //             final customer = snapshot.data;
-  //             return ListTile(
-  //               title: Text(customer != null ? '${customer.firstName} ${customer.lastName}' : 'Unknown Customer'),
-  //               subtitle: Text('Reservation ID: ${reservation.id}'),
-  //               onTap: () {
-  //                 // Show reservation details
-  //                 _showReservationDetails(reservation, customer, flight);
-  //               },
-  //             );
-  //           },
-  //         );
-  //       },
-  //     ),
-  //     floatingActionButton: FloatingActionButton(
-  //       onPressed: _showAddReservationDialog,
-  //       child: Icon(Icons.add),
-  //     ),
-  //   );
-  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,13 +65,22 @@ class _ReservationPageState extends State<ReservationPage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(AppLocalizations.of(context)!.translate('r_page_title')!),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.g_translate),
-            onPressed: () {
-              _changeLanguage(
-                _locale.languageCode == 'en' ? const Locale('zh', 'CN') : const Locale('en', 'CA'),
-              );
-            },
+          DropdownButtonHideUnderline(
+            child: DropdownButton<Locale>(
+              value: _locale,
+              icon: Icon(Icons.language),
+              onChanged: (Locale? newLocale) {
+                if (newLocale != null) {
+                  _changeLanguage(newLocale);
+                }
+              },
+              items: _supportedLocales.map((Locale locale) {
+                return DropdownMenuItem<Locale>(
+                  value: locale,
+                  child: Text(_getLocaleDisplayName(locale)),
+                );
+              }).toList(),
+            ),
           ),
         ],
       ),
@@ -148,10 +92,10 @@ class _ReservationPageState extends State<ReservationPage> {
             future: customerDAO.findCustomerById(reservation.customerId).first,
             builder: (context, customerSnapshot) {
               if (customerSnapshot.connectionState == ConnectionState.waiting) {
-                return ListTile(title: Text('Loading...'));
+                return ListTile(title: Text(AppLocalizations.of(context)!.translate('r_loading')!));
               }
               if (customerSnapshot.hasError) {
-                return ListTile(title: Text('Error loading customer'));
+                return ListTile(title: Text(AppLocalizations.of(context)!.translate('r_error_loading_customer')!));
               }
               final customer = customerSnapshot.data;
 
@@ -159,17 +103,19 @@ class _ReservationPageState extends State<ReservationPage> {
                 future: flightRepository.getFlightById(reservation.flightId),
                 builder: (context, flightSnapshot) {
                   if (flightSnapshot.connectionState == ConnectionState.waiting) {
-                    return ListTile(title: Text('Loading...'));
+                    return ListTile(title: Text(AppLocalizations.of(context)!.translate('r_loading')!));
                   }
                   if (flightSnapshot.hasError) {
-                    return ListTile(title: Text('Error loading flight'));
+                    return ListTile(title: Text(AppLocalizations.of(context)!.translate('r_error_loading_flight')!));
                   }
                   final flight = flightSnapshot.data;
 
                   return ListTile(
-                    title: Text(customer != null ? '${customer.firstName} ${customer.lastName}' : 'Unknown Customer'),
-                    subtitle: Text('Flight: ${flight != null ? '${flight.departureCity} to ${flight.destinationCity}' : 'Unknown Flight'}'),
-                    trailing: Text('Reservation ID: ${reservation.id}'),
+                    title: Text(customer != null ? '${customer.firstName} ${customer.lastName}' : AppLocalizations.of(context)!.translate('r_unknown_customer')!),
+                    subtitle: Text(AppLocalizations.of(context)!.translate('r_flight_details')!
+                        .replaceFirst('{departureCity}', flight?.departureCity ?? AppLocalizations.of(context)!.translate('r_unknown_flight')!)
+                        .replaceFirst('{destinationCity}', flight?.destinationCity ?? AppLocalizations.of(context)!.translate('r_unknown_flight')!)),
+                    trailing: Text('${AppLocalizations.of(context)!.translate('r_reservation_id')!} ${reservation.id}'),
                     onTap: () {
                       _showReservationDetails(reservation, customer, flight);
                     },
@@ -187,25 +133,35 @@ class _ReservationPageState extends State<ReservationPage> {
     );
   }
 
+  String _getLocaleDisplayName(Locale locale) {
+    switch (locale.languageCode) {
+      case 'zh':
+        return 'Chinese';
+      case 'fr':
+        return 'French';
+      default:
+        return 'English';
+    }
+  }
+
   void _showReservationDetails(Reservation reservation, Customer? customer, Flight? flight) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Reservation Details'),
+          title: Text(AppLocalizations.of(context)!.translate('r_reservation_details')!),
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Reservation ID: ${reservation.id}'),
-              Text('Customer: ${customer != null ? '${customer.firstName} ${customer.lastName}' : 'Unknown'}'),
-              Text('Customer ID: ${reservation.customerId}'),
-              // Add more details as needed
+              Text('${AppLocalizations.of(context)!.translate('r_reservation_id')!} ${reservation.id}'),
+              Text('${AppLocalizations.of(context)!.translate('r_customer')!}: ${customer != null ? '${customer.firstName} ${customer.lastName}' : AppLocalizations.of(context)!.translate('r_unknown_customer')!}'),
+              Text('${AppLocalizations.of(context)!.translate('r_customer_id')!}: ${reservation.customerId}'),
             ],
           ),
           actions: [
             TextButton(
-              child: Text('Close'),
+              child: Text(AppLocalizations.of(context)!.translate('r_close')!),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -215,20 +171,37 @@ class _ReservationPageState extends State<ReservationPage> {
       },
     );
   }
-}
 
+  void _showAddReservationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AddReservationDialog(
+          customerDAO: customerDAO,
+          flightRepository: flightRepository,
+          onReservationAdded: (int customerId, int flightId) async {
+            final newReservation = Reservation.noid(customerId, flightId);
+            final insertedId = await reservationDAO.insertReservation(newReservation);
+            if (insertedId != null) {
+              _loadReservations(); // Reload the reservations list
+            }
+          },
+        );
+      },
+    );
+  }
+}
 
 class AddReservationDialog extends StatefulWidget {
   final Function(int, int) onReservationAdded;
-  final CustomerDAO customerDAO; // Add this line
-  final FlightRepository flightRepository; // Add this line
-
+  final CustomerDAO customerDAO;
+  final FlightRepository flightRepository;
 
   const AddReservationDialog({
     Key? key,
     required this.onReservationAdded,
-    required this.customerDAO, // Add this line
-    required this.flightRepository, // Add this line
+    required this.customerDAO,
+    required this.flightRepository,
   }) : super(key: key);
 
   @override
@@ -237,13 +210,12 @@ class AddReservationDialog extends StatefulWidget {
 
 class _AddReservationDialogState extends State<AddReservationDialog> {
   int? selectedCustomerId;
-  int? selectedFlightId; // Add this line
-
+  int? selectedFlightId;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Add Reservation'),
+      title: Text(AppLocalizations.of(context)!.translate('r_add_reservation')!),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -254,11 +226,11 @@ class _AddReservationDialogState extends State<AddReservationDialog> {
                 return CircularProgressIndicator();
               }
               if (snapshot.hasError) {
-                return Text('Error loading customers');
+                return Text(AppLocalizations.of(context)!.translate('r_error_loading_customers')!);
               }
               final customers = snapshot.data ?? [];
               return DropdownButton<int>(
-                hint: Text('Select Customer'),
+                hint: Text(AppLocalizations.of(context)!.translate('r_select_customer')!),
                 value: selectedCustomerId,
                 onChanged: (int? value) {
                   setState(() {
@@ -274,19 +246,19 @@ class _AddReservationDialogState extends State<AddReservationDialog> {
               );
             },
           ),
-          SizedBox(height: 16.0), // Add spacing
+          SizedBox(height: 16.0),
           FutureBuilder<List<Flight>>(
-            future: widget.flightRepository.getAllFlights(), // Fetch flights from repository
+            future: widget.flightRepository.getAllFlights(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return CircularProgressIndicator();
               }
               if (snapshot.hasError) {
-                return Text('Error loading flights');
+                return Text(AppLocalizations.of(context)!.translate('r_error_loading_flights')!);
               }
               final flights = snapshot.data ?? [];
               return DropdownButton<int>(
-                hint: Text('Select Flight'),
+                hint: Text(AppLocalizations.of(context)!.translate('r_select_flight')!),
                 value: selectedFlightId,
                 onChanged: (int? value) {
                   setState(() {
@@ -306,18 +278,18 @@ class _AddReservationDialogState extends State<AddReservationDialog> {
       ),
       actions: [
         TextButton(
-          child: Text('Cancel'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        TextButton(
-          child: Text('Add'),
+          child: Text(AppLocalizations.of(context)!.translate('r_add')!),
           onPressed: () {
             if (selectedCustomerId != null && selectedFlightId != null) {
               widget.onReservationAdded(selectedCustomerId!, selectedFlightId!);
               Navigator.of(context).pop();
             }
+          },
+        ),
+        TextButton(
+          child: Text(AppLocalizations.of(context)!.translate('r_cancel')!),
+          onPressed: () {
+            Navigator.of(context).pop();
           },
         ),
       ],

@@ -88,5 +88,27 @@
   "a_reload" : "Reload Previous",
   "a_added": "Plane Added",
   "a_updated":"Plane Updated"
+  "a_spd_hint": "What is the max speed of the plane?",
+
+  "r_page_title": "Reservations",
+  "r_loading": "Loading...",
+  "r_error_loading_customer": "Error loading customer",
+  "r_unknown_customer": "Unknown Customer",
+  "r_error_loading_flight": "Error loading flight",
+  "r_unknown_flight": "Unknown Flight",
+  "r_reservation_id": "Reservation ID: ",
+  "r_reservation_details": "Reservation Details",
+  "r_close": "Close",
+  "r_add_reservation": "Add Reservation",
+  "r_error_loading_customers": "Error loading customers",
+  "r_select_customer": "Select Customer",
+  "r_error_loading_flights": "Error loading flights",
+  "r_select_flight": "Select Flight",
+  "r_add": "Add",
+  "r_cancel": "Cancel",
+  "r_customer": "Customer",
+  "r_customer_id": "Customer ID",
+  "r_flight_details": "Flight: {departureCity} to {destinationCity}"
+
 }
 
