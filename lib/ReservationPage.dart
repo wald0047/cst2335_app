@@ -117,7 +117,15 @@ class _ReservationPageState extends State<ReservationPage> {
                         .replaceFirst('{destinationCity}', flight?.destinationCity ?? AppLocalizations.of(context)!.translate('r_unknown_flight')!)),
                     trailing: Text('${AppLocalizations.of(context)!.translate('r_reservation_id')!} ${reservation.id}'),
                     onTap: () {
-                      _showReservationDetails(reservation, customer, flight);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ReservationDetailsPage(
+                            reservation: reservation,
+                            customer: customer,
+                            flight: flight,
+                          ),
+                        ),
+                      );
                     },
                   );
                 },
@@ -142,34 +150,6 @@ class _ReservationPageState extends State<ReservationPage> {
       default:
         return 'English';
     }
-  }
-
-  void _showReservationDetails(Reservation reservation, Customer? customer, Flight? flight) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.translate('r_reservation_details')!),
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('${AppLocalizations.of(context)!.translate('r_reservation_id')!} ${reservation.id}'),
-              Text('${AppLocalizations.of(context)!.translate('r_customer')!}: ${customer != null ? '${customer.firstName} ${customer.lastName}' : AppLocalizations.of(context)!.translate('r_unknown_customer')!}'),
-              Text('${AppLocalizations.of(context)!.translate('r_customer_id')!}: ${reservation.customerId}'),
-            ],
-          ),
-          actions: [
-            TextButton(
-              child: Text(AppLocalizations.of(context)!.translate('r_close')!),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   void _showAddReservationDialog() {
@@ -291,6 +271,100 @@ class _AddReservationDialogState extends State<AddReservationDialog> {
           onPressed: () {
             Navigator.of(context).pop();
           },
+        ),
+      ],
+    );
+  }
+}
+
+class ReservationDetailsPage extends StatelessWidget {
+  final Reservation reservation;
+  final Customer? customer;
+  final Flight? flight;
+
+  const ReservationDetailsPage({
+    Key? key,
+    required this.reservation,
+    this.customer,
+    this.flight,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.translate('r_reservation_details')!),
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildDetailItem(
+              title: AppLocalizations.of(context)!.translate('r_reservation_id')!,
+              value: reservation.id.toString(),
+            ),
+            SizedBox(height: 16.0),
+            _buildDetailItem(
+              title: AppLocalizations.of(context)!.translate('r_customer')!,
+              value: customer != null
+                  ? '${customer!.firstName} ${customer!.lastName}'
+                  : AppLocalizations.of(context)!.translate('r_unknown_customer')!,
+            ),
+            SizedBox(height: 16.0),
+            _buildDetailItem(
+              title: AppLocalizations.of(context)!.translate('r_customer_id')!,
+              value: reservation.customerId.toString(),
+            ),
+            SizedBox(height: 16.0),
+            _buildDetailItem(
+              title: AppLocalizations.of(context)!.translate('r_flight_departure_city')!,
+              value: flight?.departureCity ?? AppLocalizations.of(context)!.translate('r_unknown_flight')!,
+            ),
+            SizedBox(height: 16.0),
+            _buildDetailItem(
+              title: AppLocalizations.of(context)!.translate('r_flight_destination_city')!,
+              value: flight?.destinationCity ?? AppLocalizations.of(context)!.translate('r_unknown_flight')!,
+            ),
+            SizedBox(height: 16.0),
+            _buildDetailItem(
+              title: AppLocalizations.of(context)!.translate('r_flight_departure_time')!,
+              value: flight?.departureTime.toLocal().toString() ?? AppLocalizations.of(context)!.translate('r_unknown_time')!,
+            ),
+            SizedBox(height: 16.0),
+            _buildDetailItem(
+              title: AppLocalizations.of(context)!.translate('r_flight_arrival_time')!,
+              value: flight?.arrivalTime.toLocal().toString() ?? AppLocalizations.of(context)!.translate('r_unknown_time')!,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDetailItem({required String title, required String value}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16.0,
+            ),
+          ),
+        ),
+        SizedBox(width: 16.0),
+        Expanded(
+          child: Text(
+            value,
+            textAlign: TextAlign.end,
+            style: TextStyle(
+              fontSize: 16.0,
+            ),
+          ),
         ),
       ],
     );

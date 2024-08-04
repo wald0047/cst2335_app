@@ -84,23 +84,27 @@
 
   "r_page_title": "Reservations",
   "r_loading": "Loading...",
-  "r_error_loading_customer": "Error loading customer",
+  "r_error_loading_customer": "Error loading customer details",
+  "r_error_loading_flight": "Error loading flight details",
   "r_unknown_customer": "Unknown Customer",
-  "r_error_loading_flight": "Error loading flight",
   "r_unknown_flight": "Unknown Flight",
-  "r_reservation_id": "Reservation ID: ",
-  "r_reservation_details": "Reservation Details",
-  "r_close": "Close",
+  "r_reservation_id": "Reservation ID",
+  "r_flight_details": "Flight: {departureCity} to {destinationCity}",
+  "r_customer": "Customer",
+  "r_customer_id": "Customer ID",
+  "r_flight_departure": "Flight: {departureCity} to {destinationCity}",
+  "r_flight_departure_time": "Departure Time",
+  "r_flight_arrival_time": "Arrival Time",
   "r_add_reservation": "Add Reservation",
-  "r_error_loading_customers": "Error loading customers",
   "r_select_customer": "Select Customer",
-  "r_error_loading_flights": "Error loading flights",
   "r_select_flight": "Select Flight",
   "r_add": "Add",
   "r_cancel": "Cancel",
-  "r_customer": "Customer",
-  "r_customer_id": "Customer ID",
-  "r_flight_details": "Flight: {departureCity} to {destinationCity}"
-
+  "r_reservation_details": "Reservation Details",
+  "r_close": "Close",
+  "r_error_loading_customers": "Error loading customers",
+  "r_error_loading_flights": "Error loading flights",
+  "r_flight_departure_city": "Departure City",
+  "r_flight_destination_city": "Destination City"
 }
 
