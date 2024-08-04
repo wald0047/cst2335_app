@@ -36,4 +36,11 @@ abstract class FlightDAO {
   /// [flight] is the [Flight] object to be deleted.
   @delete
   Future<void> deleteFlight(Flight flight);
+
+  /// Retrieves a flight by its ID from the database.
+  ///
+  /// [id] is the ID of the flight to be retrieved.
+  /// Returns a [Future] that completes with the [Flight] object if found, or `null` if not found.
+  @Query('SELECT * FROM Flight WHERE id = :id')
+  Future<Flight?> findFlightById(int id);
 }
