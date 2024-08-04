@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:cst2335_app/AppLocalizations.dart';
 import 'package:cst2335_app/database.dart';
 import 'package:cst2335_app/flight.dart';
@@ -30,10 +31,13 @@ class _ReservationPageState extends State<ReservationPage> {
     const Locale('fr', 'FR'),
   ];
 
+  final EncryptedSharedPreferences _prefs = EncryptedSharedPreferences();
+
   @override
   void initState() {
     super.initState();
     _initializeDependencies();
+    _loadLocale();
   }
 
   void _initializeDependencies() async {
@@ -51,11 +55,50 @@ class _ReservationPageState extends State<ReservationPage> {
     });
   }
 
-  void _changeLanguage(Locale locale) {
+  void _loadLocale() async {
+    final languageCode = await _prefs.getString('languageCode') ?? 'en';
+    final countryCode = await _prefs.getString('countryCode') ?? 'CA';
+    setState(() {
+      _locale = Locale(languageCode, countryCode);
+    });
+    MyApp.setLocale(context, _locale);
+  }
+
+  void _changeLanguage(Locale locale) async {
     setState(() {
       _locale = locale;
     });
     MyApp.setLocale(context, locale);
+
+    await _prefs.setString('languageCode', locale.languageCode);
+    await _prefs.setString('countryCode', locale.countryCode ?? '');
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(AppLocalizations.of(context)!.translate('language_changed')!),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _showInstructionsDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.translate('instructions_title')!),
+          content: Text(AppLocalizations.of(context)!.translate('instructions_content')!),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(AppLocalizations.of(context)!.translate('r_close')!),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -65,6 +108,11 @@ class _ReservationPageState extends State<ReservationPage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(AppLocalizations.of(context)!.translate('r_page_title')!),
         actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.help),
+            onPressed: _showInstructionsDialog,
+            tooltip: AppLocalizations.of(context)!.translate('show_instructions')!,
+          ),
           DropdownButtonHideUnderline(
             child: DropdownButton<Locale>(
               value: _locale,
@@ -248,7 +296,7 @@ class _AddReservationDialogState extends State<AddReservationDialog> {
                 items: flights.map((Flight flight) {
                   return DropdownMenuItem<int>(
                     value: flight.id,
-                    child: Text('${flight.departureCity} to ${flight.destinationCity}'),
+                    child: Text('${flight.departureCity} -> ${flight.destinationCity}'),
                   );
                 }).toList(),
               );
@@ -258,19 +306,19 @@ class _AddReservationDialogState extends State<AddReservationDialog> {
       ),
       actions: [
         TextButton(
-          child: Text(AppLocalizations.of(context)!.translate('r_add')!),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text(AppLocalizations.of(context)!.translate('cancel')!),
+        ),
+        TextButton(
           onPressed: () {
             if (selectedCustomerId != null && selectedFlightId != null) {
               widget.onReservationAdded(selectedCustomerId!, selectedFlightId!);
               Navigator.of(context).pop();
             }
           },
-        ),
-        TextButton(
-          child: Text(AppLocalizations.of(context)!.translate('r_cancel')!),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+          child: Text(AppLocalizations.of(context)!.translate('add')!),
         ),
       ],
     );

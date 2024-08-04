@@ -44,5 +44,13 @@
   "r_error_loading_customers": "Erreur lors du chargement des clients",
   "r_error_loading_flights": "Erreur lors du chargement des vols",
   "r_flight_departure_city": "Ville de départ",
-  "r_flight_destination_city": "Ville de destination"
+  "r_flight_destination_city": "Ville de destination",
+  "r_flight": "Vol",
+  "cancel": "Annuler",
+  "add": "Ajouter",
+  "show_instructions": "Afficher les Instructions",
+  "language_changed": "Langue changée avec succès",
+  "instructions_title": "Instructions",
+  "instructions_content": "1. Pour ajouter une réservation, appuyez sur le bouton '+'.\n2. Sélectionnez un client et un vol.\n3. Appuyez sur 'Ajouter' pour créer la réservation.\n4. Appuyez sur un élément de réservation pour voir les détails."
+
 }
