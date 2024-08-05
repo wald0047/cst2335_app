@@ -11,6 +11,8 @@ import 'package:cst2335_app/reservationdao.dart';
 import 'package:cst2335_app/reservation.dart';
 import 'package:cst2335_app/main.dart';
 
+/// The `ReservationPage` widget displays a list of reservations with options to add new reservations.
+/// It also provides functionality to change the language of the app and show instructions.
 class ReservationPage extends StatefulWidget {
   const ReservationPage({Key? key}) : super(key: key);
 
@@ -40,6 +42,7 @@ class _ReservationPageState extends State<ReservationPage> {
     _loadLocale();
   }
 
+  /// Initializes the necessary dependencies such as database and DAOs, and loads reservations.
   void _initializeDependencies() async {
     final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
     flightRepository = Provider.of<FlightRepository>(context, listen: false);
@@ -48,6 +51,7 @@ class _ReservationPageState extends State<ReservationPage> {
     _loadReservations();
   }
 
+  /// Loads the list of reservations from the database.
   void _loadReservations() async {
     final loadedReservations = await reservationDAO.getAllReservations();
     setState(() {
@@ -55,6 +59,7 @@ class _ReservationPageState extends State<ReservationPage> {
     });
   }
 
+  /// Loads the locale settings from shared preferences and updates the app locale.
   void _loadLocale() async {
     final languageCode = await _prefs.getString('languageCode') ?? 'en';
     final countryCode = await _prefs.getString('countryCode') ?? 'CA';
@@ -64,6 +69,7 @@ class _ReservationPageState extends State<ReservationPage> {
     MyApp.setLocale(context, _locale);
   }
 
+  /// Changes the app language and updates the shared preferences.
   void _changeLanguage(Locale locale) async {
     setState(() {
       _locale = locale;
@@ -81,6 +87,7 @@ class _ReservationPageState extends State<ReservationPage> {
     );
   }
 
+  /// Shows a dialog with instructions for using the reservation page.
   void _showInstructionsDialog() {
     showDialog(
       context: context,
@@ -220,6 +227,8 @@ class _ReservationPageState extends State<ReservationPage> {
   }
 }
 
+/// Dialog for adding a new reservation.
+/// Provides dropdowns for selecting a customer and a flight.
 class AddReservationDialog extends StatefulWidget {
   final Function(int, int) onReservationAdded;
   final CustomerDAO customerDAO;
@@ -325,6 +334,7 @@ class _AddReservationDialogState extends State<AddReservationDialog> {
   }
 }
 
+/// Page displaying the details of a reservation, including customer and flight information.
 class ReservationDetailsPage extends StatelessWidget {
   final Reservation reservation;
   final Customer? customer;
