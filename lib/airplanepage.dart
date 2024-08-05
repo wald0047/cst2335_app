@@ -9,6 +9,9 @@ import 'package:cst2335_app/DataRepository.dart';
 import 'package:flutter/services.dart';
 import 'database.dart';
 
+/// Page that displays a list of airplanes and allows the user to
+/// create, read, update, and delete airplanes.
+/// On tablets or desktop devices, the airplane details are displayed beside the list.
 class AirplanePage extends StatefulWidget {
   const AirplanePage({super.key});
 
@@ -62,13 +65,17 @@ class AirplanePageState extends State<AirplanePage> {
     await _database.close();
   }
 
+  /// Changes the localization of the application.
+  ///
+  /// [locale] is the new locale to set.
   void _changeLocale(Locale locale) {
     setState(() {
       _locale = locale;
     });
-    MyApp.setLocale(context, locale); // Assuming MyApp is the root widget.
+    MyApp.setLocale(context, locale);
   }
 
+  /// Shows an [AlertDialog] with instructions.
   void _showInstructions() {
     var trans = AppLocalizations.of(context)!;
     showDialog(
@@ -133,6 +140,8 @@ class AirplanePageState extends State<AirplanePage> {
         body: _responsiveLayout());
   }
 
+  /// Determines which widgets are to be used based on the screen dimensions.
+  /// Returns a [Widget].
   Widget _responsiveLayout() {
     var size = MediaQuery.of(context).size;
     var height = size.height;
@@ -156,6 +165,8 @@ class AirplanePageState extends State<AirplanePage> {
     }
   }
 
+  /// Returns a [Widget] for the list of existing airplanes, along
+  /// with a button for adding new planes.
   Widget _airplaneList() {
     var trans = AppLocalizations.of(context)!;
     return Column(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -215,6 +226,8 @@ class AirplanePageState extends State<AirplanePage> {
     ]);
   }
 
+  /// Handles the deletion of a given [Airplane] in the [_planes]
+  /// list.
   void _deleteAirplane(Airplane plane) {
     var trans = AppLocalizations.of(context)!;
     int index = _planes.indexOf(plane);
@@ -255,6 +268,8 @@ class AirplanePageState extends State<AirplanePage> {
     });
   }
 
+  /// Returns a [Widget] that shows the [selectedPlane]'s details
+  /// with an edit form, or a form for creating new planes.
   Widget _detailsPage() {
     var trans = AppLocalizations.of(context)!;
     if (_selectedPlane == null) {
@@ -372,6 +387,7 @@ class AirplanePageState extends State<AirplanePage> {
     }
   }
 
+  /// Returns a form widget for adding or editing an existing airplane.
   Widget _planeForm() {
     var trans = AppLocalizations.of(context)!;
     return Form(
@@ -451,6 +467,7 @@ class AirplanePageState extends State<AirplanePage> {
             ]));
   }
 
+  /// Restore the form's fields to their previously entered values.
   void _reloadFromDataRepo() {
     DataRepository.loadData().then((done) {
       setState(() {
@@ -462,6 +479,7 @@ class AirplanePageState extends State<AirplanePage> {
     });
   }
 
+  /// Save the form's fields to the [DataRepository].
   void _saveToDataRepo() {
     DataRepository.planeType = _typeTextCtl.value.text;
     DataRepository.planePassengers = _passengerTextCtl.value.text;
@@ -470,6 +488,7 @@ class AirplanePageState extends State<AirplanePage> {
     DataRepository.saveData();
   }
 
+  /// Resets all form fields to empty.
   void _resetSelectedPlane() {
     _selectedPlane = null;
     _idTextCtl.text = "";
@@ -479,7 +498,7 @@ class AirplanePageState extends State<AirplanePage> {
     _rangeTextCtl.text = "";
   }
 
-  //This function gets run when you click the button
+  /// Creates a new plane in the database from the form entries.
   void _addPlane() {
     int idx = _planes.length;
     Airplane noid = Airplane.noid(
