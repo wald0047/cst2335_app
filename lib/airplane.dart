@@ -2,19 +2,22 @@ import 'package:floor/floor.dart';
 
 @entity
 class Airplane {
-  @PrimaryKey(autoGenerate: true)
-  final int? id;
-  final String type;
-  final int numPassengers;
-  final int maxSpeed;
-  final int range;
 
+  @PrimaryKey(autoGenerate: true)
+  final int? id; // Autoincremented primary key
+  final String type; // Type of plane
+  final int numPassengers; // number of passengers
+  final int maxSpeed; // maximum speed in km/h
+  final int range; // range in km
+
+  /// Default Constructor
   Airplane(this.id,
           this.type,
           this.numPassengers,
           this.maxSpeed,
           this.range);
 
+  /// Constructor to convert null id Airplane to nonnull id airplane
   Airplane.fromNoid(this.id,
       Airplane noid) :
       this.type = noid.type,
@@ -24,7 +27,7 @@ class Airplane {
 
   }
 
-
+  /// Constructor for null id airplanes
   Airplane.noid(
       this.type,
       this.numPassengers,
