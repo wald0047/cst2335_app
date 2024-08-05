@@ -334,14 +334,6 @@ class AirplanePageState extends State<AirplanePage> {
                         Icon(Icons.save),
                         Text(trans.translate("a_add"))
                       ])),
-                  ElevatedButton(
-                      onPressed: () {
-                        _reloadFromDataRepo();
-                      },
-                      child: Row(children: [
-                        Icon(Icons.refresh),
-                        Text(trans.translate("a_reload"))
-                      ])),
                   OutlinedButton(
                       onPressed: () {
                         setState(() {
@@ -353,7 +345,24 @@ class AirplanePageState extends State<AirplanePage> {
                         Icon(Icons.cancel),
                         Text(trans.translate("a_clear"))
                       ])),
-                ]))
+                ])),
+              Container(
+                margin: EdgeInsets.all(4),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      _reloadFromDataRepo();
+                    },
+                  child: Row(
+                      children: [
+                    Icon(Icons.refresh),
+                    Text(trans.translate("a_reload"))
+                  ])
+                  )]
+                )
+              ),
       ];
       if (_selectedPlane!.id == null) {
         return Column(children: add);
