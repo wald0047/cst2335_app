@@ -43,7 +43,6 @@
 
   "c_birthdate_label": "Birthdate",
   "c_birthdate_hint_text": "Select your birthdate ...",
-  "c_birthdate_error_message": "Please select your birthdate.",
 
   "f_page_title": "Flights",
   "f_instruction": "Instructions",
@@ -51,6 +50,7 @@
   "f_no_flights": "There are no flights available.",
   "f_departure": "Departure",
   "f_arrival": "Arrival",
+  "f_select_flight": "No flight selected",
 
   "a_page_title": "Add Flight",
   "a_instruction": "Instructions for Adding Flight",
@@ -59,6 +59,7 @@
   "d_page_title": "Flight Details",
   "d_instruction": "Instructions for Flight Details",
   "d_instructions": "1. View the flight details.\n2. Edit the departure city or destination city.\n3. Update the departure time or arrival time if needed.\n4. Click 'Update' to save changes or 'Delete' to remove the flight.",
+  "c_birthdate_error_message": "Please select your birthdate.",
 
   "a_title": "Airplane",
   "a_nosel": "Nothing is selected",
@@ -87,6 +88,38 @@
   "a_trans": "Traduire:",
   "a_reload" : "Reload Previous",
   "a_added": "Plane Added",
-  "a_updated":"Plane Updated"
+  "a_updated":"Plane Updated",
+
+  "r_page_title": "Reservations",
+  "r_loading": "Loading...",
+  "r_error_loading_customer": "Error loading customer details",
+  "r_error_loading_flight": "Error loading flight details",
+  "r_unknown_customer": "Unknown Customer",
+  "r_unknown_flight": "Unknown Flight",
+  "r_reservation_id": "Reservation ID",
+  "r_flight_details": "Flight: {departureCity} to {destinationCity}",
+  "r_customer": "Customer",
+  "r_customer_id": "Customer ID",
+  "r_flight_departure": "Flight: {departureCity} to {destinationCity}",
+  "r_flight_departure_time": "Departure Time",
+  "r_flight_arrival_time": "Arrival Time",
+  "r_add_reservation": "Add Reservation",
+  "r_select_customer": "Select Customer",
+  "r_select_flight": "Select Flight",
+  "r_add": "Add",
+  "r_cancel": "Cancel",
+  "r_reservation_details": "Reservation Details",
+  "r_close": "Close",
+  "r_error_loading_customers": "Error loading customers",
+  "r_error_loading_flights": "Error loading flights",
+  "r_flight_departure_city": "Departure City",
+  "r_flight_destination_city": "Destination City",
+  "instructions_title": "Instructions",
+  "instructions_content": "1. To add a reservation, press the '+' button.\n2. Select a customer and a flight.\n3. Press 'Add' to create the reservation.\n4. View reservation details by tapping on any reservation item.",
+  "r_flight": "Flight",
+  "cancel": "Cancel",
+  "add": "Add",
+  "show_instructions": "Show Instructions",
+  "language_changed": "Language changed successfully"
 }
 

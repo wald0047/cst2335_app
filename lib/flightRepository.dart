@@ -49,4 +49,13 @@ class FlightRepository {
   Future<void> deleteFlight(Flight flight) {
     return database.flightDAO.deleteFlight(flight);
   }
+
+  /// Retrieves a flight by its ID from the database.
+  ///
+  /// [id] is the ID of the flight to be retrieved.
+  /// Returns a [Future] that completes with the [Flight] object if found, or `null` if not found.
+  Future<Flight?> getFlightById(int id) {
+    return database.flightDAO.findFlightById(id);
+  }
+
 }

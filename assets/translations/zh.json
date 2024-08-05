@@ -51,6 +51,7 @@
   "f_no_flights": "没有可用的航班。",
   "f_departure": "出发",
   "f_arrival": "到达",
+  "f_select_flight": "未选择航班",
 
   "a_page_title": "添加航班",
   "a_instruction": "添加航班的说明",
@@ -58,5 +59,38 @@
 
   "d_page_title": "航班详情",
   "d_instruction": "航班详情的说明",
-  "d_instructions": "1. 查看航班详情。\n2. 编辑出发城市或目的地城市。\n3. 如果需要，更新出发时间或到达时间。\n4. 点击“更新”保存更改或点击“删除”删除航班。"
+  "d_instructions": "1. 查看航班详情。\n2. 编辑出发城市或目的地城市。\n3. 如果需要，更新出发时间或到达时间。\n4. 点击“更新”保存更改或点击“删除”删除航班。",
+
+  "r_page_title": "预订",
+  "r_loading": "加载中...",
+  "r_error_loading_customer": "加载客户信息出错",
+  "r_error_loading_flight": "加载航班信息出错",
+  "r_unknown_customer": "未知客户",
+  "r_unknown_flight": "未知航班",
+  "r_reservation_id": "预订 ID",
+  "r_flight_details": "航班: {departureCity} 到 {destinationCity}",
+  "r_customer": "客户",
+  "r_customer_id": "客户 ID",
+  "r_flight_departure": "航班: {departureCity} 到 {destinationCity}",
+  "r_flight_departure_time": "出发时间",
+  "r_flight_arrival_time": "到达时间",
+  "r_add_reservation": "添加预订",
+  "r_select_customer": "选择客户",
+  "r_select_flight": "选择航班",
+  "r_add": "添加",
+  "r_cancel": "取消",
+  "r_reservation_details": "预订详情",
+  "r_close": "关闭",
+  "r_error_loading_customers": "加载客户信息出错",
+  "r_error_loading_flights": "加载航班信息出错",
+  "r_flight_departure_city": "出发城市",
+  "r_flight_destination_city": "目的地城市",
+  "language_changed": "语言更改成功。",
+  "r_flight": "航班",
+  "cancel": "取消",
+  "add": "添加",
+  "show_instructions": "显示说明",
+  "instructions_title": "使用说明",
+  "instructions_content": "1. 按 '+' 按钮添加预订。\n2. 选择客户和航班。\n3. 按 '添加' 创建预订。\n4. 点击任何预订项目查看详细信息。"
+
 }

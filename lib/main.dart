@@ -1,9 +1,10 @@
 import 'package:cst2335_app/AppLocalizations.dart';
-import 'package:flutter/material.dart';
 import 'package:cst2335_app/CustomerPage.dart';
 import 'package:cst2335_app/airplanepage.dart';
 import 'package:cst2335_app/FlightPage.dart';
 import 'package:cst2335_app/ReservationPage.dart';
+import 'package:cst2335_app/reservationdao.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'database.dart';
@@ -11,20 +12,23 @@ import 'flightRepository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build(); // Initialize the database
-  final flightRepository = FlightRepository(database); // Create an instance of FlightRepository
-  runApp(MyApp(flightRepository: flightRepository));
+  final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+  final flightRepository = FlightRepository(database);
+  final reservationDAO = database.reservationDAO; // Initialize ReservationDAO if needed
+
+  runApp(MyApp(flightRepository: flightRepository, reservationDAO: reservationDAO));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key, required this.flightRepository});
+  const MyApp({super.key, required this.flightRepository, required this.reservationDAO});
   final FlightRepository flightRepository;
-
+  final ReservationDAO reservationDAO;
 
   @override
   State<MyApp> createState() {
     return MyAppState();
   }
+
   static void setLocale(BuildContext context, Locale newLocale) async {
     MyAppState? state = context.findAncestorStateOfType<MyAppState>();
     state?.changeLanguage(newLocale);
@@ -36,8 +40,7 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  // This widget is the root of your application.
-  var _locale = const Locale("en", "ca");
+  var _locale = const Locale("en", "CA");
 
   void changeLanguage(Locale newLocale) {
     setState(() {
@@ -47,9 +50,9 @@ class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider.value( // New: Provide the FlightRepository instance to the widget tree
-        value: widget.flightRepository,
-    child: MaterialApp(
+    return Provider.value(
+      value: widget.flightRepository,
+      child: MaterialApp(
         title: 'Final Project',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -68,7 +71,6 @@ class MyAppState extends State<MyApp> {
           GlobalCupertinoLocalizations.delegate
         ],
         locale: _locale,
-        // home: const MyHomePage(title: 'Home'),
         initialRoute: "/",
         routes: {
           '/customer': (context) => const CustomerPage(),
@@ -76,11 +78,11 @@ class MyAppState extends State<MyApp> {
           '/flight': (context) => const FlightPage(),
           '/reservation': (context) => const ReservationPage(),
           '/': (context) => const MyHomePage(title: 'Home'),
-        }
-        )
-      );
-    }
+        },
+      ),
+    );
   }
+}
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
