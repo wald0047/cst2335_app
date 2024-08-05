@@ -50,6 +50,7 @@
   "f_no_flights": "There are no flights available.",
   "f_departure": "Departure",
   "f_arrival": "Arrival",
+  "f_select_flight": "No flight selected",
 
   "a_page_title": "Add Flight",
   "a_instruction": "Instructions for Adding Flight",

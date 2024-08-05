@@ -51,6 +51,7 @@
   "f_no_flights": "没有可用的航班。",
   "f_departure": "出发",
   "f_arrival": "到达",
+  "f_select_flight": "未选择航班",
 
   "a_page_title": "添加航班",
   "a_instruction": "添加航班的说明",
